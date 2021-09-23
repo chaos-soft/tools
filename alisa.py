@@ -1,35 +1,39 @@
 #!/usr/bin/env python3
+from typing import Iterable
+import re
 import subprocess
 import time
-import xml.etree.ElementTree as ET
 
-fan_speed: int = 25
+RANGES: dict[int, Iterable[int]] = {
+    30: range(0, 50),
+    50: range(50, 60),
+    60: range(60, 65),
+    65: range(65, 70),
+    100: range(70, 100),
+}
 
 
 def main() -> None:
+    re_temp = re.compile(r'GPUCoreTemp.+(\d{2})\.')
     args = ['nvidia-settings', '-a', 'GPUFanControlState=1']
     subprocess.run(args, check=True)
-    set_fan_speed(5)
     while True:
-        args = ['nvidia-smi', '-q', '-x']
+        args = ['nvidia-settings', '-q', 'GPUCoreTemp']
         cp = subprocess.run(args, check=True, capture_output=True)
-        root = ET.fromstring(cp.stdout)
-        temperature = root[4].find('temperature')[0]
-        if temperature.tag != 'gpu_temp':
-            return
-        t = int(temperature.text.split(' ')[0])
-        if t > 65:
-            set_fan_speed(5)
-        elif t < 55:
-            set_fan_speed(-5)
-        # set_fan_speed(10) if t > 60 else set_fan_speed(-10)
-        time.sleep(2.5)
+        temp = int(re_temp.search(str(cp.stdout)).group(1))
+        for k, v in RANGES.items():
+            if temp in v:
+                set_fan_speed(k)
+                break
+        time.sleep(3)
 
 
-def set_fan_speed(offset: int = 0) -> None:
+fan_speed: int = 0
+
+
+def set_fan_speed(fs: int) -> None:
     global fan_speed
-    fs = fan_speed + offset
-    if fs > 25 and fs < 100:
+    if fan_speed != fs:
         fan_speed = fs
         args = ['nvidia-settings', '-a', f'GPUTargetFanSpeed={fan_speed}']
         subprocess.run(args, check=True)
