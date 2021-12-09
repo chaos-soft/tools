@@ -1,0 +1,134 @@
+{
+    "append": {
+        "/etc/default/libc-locales": [
+            "ru_RU.UTF-8 UTF-8"
+        ],
+        "/etc/environment": [
+            "DXVK_ASYNC=1",
+            "DXVK_LOG_LEVEL=none",
+            "EDITOR=nano",
+            "ENABLE_VKBASALT=1",
+            "GTK_THEME=Nordic-bluish-accent",
+            "MANGOHUD=1",
+            "MANGOHUD_CONFIGFILE=/home/chaos/tmp/mh",
+            "QT_QPA_PLATFORMTHEME=qt5ct",
+            "VKBASALT_CONFIG_FILE=/home/chaos/Documents/enterprise/vkBasalt.conf",
+            "VKD3D_DEBUG=none"
+        ],
+        "/etc/fstab": [
+            "LABEL=polina /mnt/polina ext4 defaults,noatime,nofail 0 3"
+        ],
+        "/etc/pulse/client.conf": [
+            "autospawn = no"
+        ],
+        "/etc/rc.local": [
+            "cpupower frequency-set -g performance",
+            "ip link set dev enp4s0 up",
+            "ip addr add 172.18.22.133/24 brd + dev enp4s0",
+            "ip route add default via 172.18.22.1"
+        ],
+        "/etc/resolv.conf": [
+            "nameserver 208.67.222.222",
+            "nameserver 208.67.220.220"
+        ],
+        "/etc/security/limits.conf": [
+            "* hard nofile 1048576"
+        ],
+        "/home/chaos/.config/autostart/autostart.desktop": [
+            "[Desktop Entry]",
+            "Exec=/home/chaos/Documents/enterprise/autostart.sh",
+            "Name=autostart",
+            "Type=Application"
+        ],
+        "/home/chaos/.config/i3/config": [
+            "bindsym $mod+d exec --no-startup-id i3-dmenu-desktop",
+            "bindsym Ctrl+0 exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Return Down Down Down Return Up Up Up Return Escape Escape Escape",
+            "bindsym Print exec --no-startup-id gnome-screenshot",
+            "exec --no-startup-id /home/chaos/Documents/enterprise/autostart.sh",
+            "exec --no-startup-id firefox",
+            "exec --no-startup-id xset -dpms",
+            "exec --no-startup-id xset r rate 300",
+            "exec --no-startup-id xset s off",
+            "hide_edge_borders both",
+            "workspace_layout tabbed"
+        ],
+        "/home/chaos/.nanorc": [
+            "include /usr/share/nano/*.nanorc"
+        ],
+        "/home/chaos/tmp/mh": [
+            "fps_limit=60,0",
+            "vsync=1",
+            "cpu_temp",
+            "cpu_power",
+            "cpu_text = 3700 pro",
+            "cpu_mhz",
+            "cpu_load_change",
+            "gpu_temp",
+            "gpu_core_clock",
+            "gpu_mem_clock",
+            "gpu_power",
+            "gpu_text = 3060 ti",
+            "gpu_load_change",
+            "arch",
+            "time",
+            "show_fps_limit",
+            "core_load",
+            "core_load_change",
+            "ram",
+            "vram",
+            "engine_version",
+            "wine",
+            "toggle_hud=F8",
+            "toggle_fps_limit=F9",
+            "gamemode",
+            "vkbasalt"
+        ]
+    },
+    "commands": {},
+    "replace": {
+        "/etc/fstab": [
+            [
+                "/ ext4 defaults 0 1",
+                "/ ext4 defaults,noatime 0 1"
+            ]
+        ],
+        "/home/chaos/.config/i3/config": [
+            [
+                "exec --no-startup-id nm-applet",
+                "# exec --no-startup-id nm-applet"
+            ],
+            [
+                "XF86AudioRaiseVolume",
+                "F12"
+            ],
+            [
+                "XF86AudioLowerVolume",
+                "F11"
+            ],
+            [
+                "XF86AudioMute",
+                "F10"
+            ],
+            [
+                "XF86AudioMicMute",
+                "Ctrl+F10"
+            ],
+            [
+                "10%",
+                "5%"
+            ],
+            [
+                "bindsym $mod+Shift+q kill",
+                "bindsym Ctrl+q kill"
+            ],
+            [
+                "bindsym $mod+d exec --no-startup-id dmenu_run",
+                "# bindsym $mod+d exec --no-startup-id dmenu_run"
+            ],
+            [
+                "        status_command i3status",
+                "        position top\n        status_command i3status"
+            ]
+        ]
+    }
+}
