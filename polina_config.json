@@ -23,9 +23,9 @@
         ],
         "/etc/rc.local": [
             "cpupower frequency-set -g performance",
-            "ip link set dev enp4s0 up",
-            "ip addr add 172.18.22.133/24 brd + dev enp4s0",
-            "ip route add default via 172.18.22.1"
+            "# ip link set dev enp4s0 up",
+            "# ip addr add 172.18.22.133/24 brd + dev enp4s0",
+            "# ip route add default via 172.18.22.1"
         ],
         "/etc/resolv.conf": [
             "nameserver 208.67.222.222",
@@ -43,9 +43,12 @@
         "/home/chaos/.config/i3/config": [
             "bindsym $mod+d exec --no-startup-id i3-dmenu-desktop",
             "bindsym Ctrl+0 exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Return Down Down Down Return Up Up Up Return Escape Escape Escape",
+            "bindsym Ctrl+minus exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Down Return Down Down Down Return Up Up Up Return Escape Escape Escape",
             "bindsym Print exec --no-startup-id gnome-screenshot",
             "exec --no-startup-id /home/chaos/Documents/enterprise/autostart.sh",
+            "exec --no-startup-id feh --bg-fill '/home/chaos/Pictures/Screenshot from 2021-04-20 01-58-49.png'",
             "exec --no-startup-id firefox",
+            "exec --no-startup-id setxkbmap -layout us,ru -option 'grp:caps_toggle,grp_led:scroll'",
             "exec --no-startup-id xset -dpms",
             "exec --no-startup-id xset r rate 300",
             "exec --no-startup-id xset s off",
@@ -56,40 +59,59 @@
             "include /usr/share/nano/*.nanorc"
         ],
         "/home/chaos/tmp/mh": [
-            "fps_limit=60,0",
-            "vsync=1",
-            "cpu_temp",
-            "cpu_power",
-            "cpu_text = 3700 pro",
-            "cpu_mhz",
-            "cpu_load_change",
-            "gpu_temp",
-            "gpu_core_clock",
-            "gpu_mem_clock",
-            "gpu_power",
-            "gpu_text = 3060 ti",
-            "gpu_load_change",
             "arch",
-            "time",
-            "show_fps_limit",
             "core_load",
             "core_load_change",
-            "ram",
-            "vram",
+            "cpu_load_change",
+            "cpu_mhz",
+            "cpu_power",
+            "cpu_temp",
+            "cpu_text = 3700 pro",
             "engine_version",
-            "wine",
-            "toggle_hud=F8",
-            "toggle_fps_limit=F9",
+            "fps_limit = 60,120,30",
             "gamemode",
-            "vkbasalt"
+            "gpu_core_clock",
+            "gpu_load_change",
+            "gpu_mem_clock",
+            "gpu_power",
+            "gpu_temp",
+            "gpu_text = 3060 ti",
+            "legacy_layout = false",
+            "ram",
+            "show_fps_limit",
+            "time",
+            "time_format = %F %T",
+            "toggle_fps_limit = F9",
+            "toggle_hud = F8",
+            "vkbasalt",
+            "vram",
+            "vsync = 1",
+            "wine",
+            "exec = echo -n 'void linux, 3060 ti, '; cat /tmp/nvidia"
         ]
     },
     "commands": {},
     "replace": {
+        "/boot/grub/grub.cfg": [
+            [
+                "17ed0e6d-39ca-4083-8cc8-2ba31235f86c",
+                "bfab8272-b5a8-4eee-9338-230fb1386259"
+            ]
+        ],
+        "/etc/default/grub": [
+            [
+                "GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=4\"",
+                "GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=4 nvidia-drm.modeset=1\""
+            ]
+        ],
         "/etc/fstab": [
             [
-                "/ ext4 defaults 0 1",
-                "/ ext4 defaults,noatime 0 1"
+                "UUID=17ed0e6d-39ca-4083-8cc8-2ba31235f86c / ext4 defaults 0 1",
+                "UUID=bfab8272-b5a8-4eee-9338-230fb1386259 / ext4 defaults,noatime 0 1"
+            ],
+            [
+                "UUID=9B34-75DD",
+                "UUID=DD29-8B5A"
             ]
         ],
         "/home/chaos/.config/i3/config": [
@@ -128,6 +150,28 @@
             [
                 "        status_command i3status",
                 "        position top\n        status_command i3status"
+            ]
+        ],
+        "/usr/share/X11/xkb/keycodes/evdev": [
+            [
+                "<RCTL> = 105;",
+                "<INS> = 105;"
+            ],
+            [
+                "<INS> = 118;",
+                "<RCTL> = 118;"
+            ],
+            [
+                "<PGUP> = 112;",
+                "<PGDN> = 112;"
+            ],
+            [
+                "<END> = 115;",
+                "<PGUP> = 115;"
+            ],
+            [
+                "<PGDN> = 117;",
+                "<END> = 117;"
             ]
         ]
     }

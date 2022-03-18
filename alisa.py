@@ -7,8 +7,8 @@ import time
 RANGES: dict[int, Iterable[int]] = {
     30: range(0, 50),
     50: range(50, 60),
-    60: range(60, 65),
-    65: range(65, 70),
+    65: range(60, 65),
+    70: range(65, 70),
     100: range(70, 100),
 }
 
@@ -23,7 +23,7 @@ def main() -> None:
         temp = int(re_temp.search(str(cp.stdout)).group(1))
         for k, v in RANGES.items():
             if temp in v:
-                set_fan_speed(k)
+                set_fan_speed(k, temp)
                 break
         time.sleep(3)
 
@@ -31,12 +31,14 @@ def main() -> None:
 fan_speed: int = 0
 
 
-def set_fan_speed(fs: int) -> None:
+def set_fan_speed(fs: int, temp: int) -> None:
     global fan_speed
     if fan_speed != fs:
         fan_speed = fs
         args = ['nvidia-settings', '-a', f'GPUTargetFanSpeed={fan_speed}']
         subprocess.run(args, check=True)
+        with open('/tmp/nvidia', 'w') as f:
+            f.write(f'{temp} {fan_speed}')
 
 
 if __name__ == '__main__':
