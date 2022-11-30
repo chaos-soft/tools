@@ -6,13 +6,13 @@
         "/etc/environment": [
             "DXVK_ASYNC=1",
             "DXVK_LOG_LEVEL=none",
+            "DXVK_STATE_CACHE_PATH=/home/chaos/tmp/caches",
             "EDITOR=nano",
             "ENABLE_VKBASALT=1",
-            "GTK_THEME=Nordic-bluish-accent",
             "MANGOHUD=1",
             "MANGOHUD_CONFIGFILE=/home/chaos/tmp/mh",
             "QT_QPA_PLATFORMTHEME=qt5ct",
-            "VKBASALT_CONFIG_FILE=/home/chaos/Documents/enterprise/vkBasalt.conf",
+            "VKBASALT_CONFIG_FILE=/home/chaos/tmp/vkBasalt.conf",
             "VKD3D_DEBUG=none"
         ],
         "/etc/fstab": [
@@ -22,10 +22,7 @@
             "autospawn = no"
         ],
         "/etc/rc.local": [
-            "cpupower frequency-set -g performance",
-            "# ip link set dev enp4s0 up",
-            "# ip addr add 172.18.22.133/24 brd + dev enp4s0",
-            "# ip route add default via 172.18.22.1"
+            "# cpupower frequency-set -g performance"
         ],
         "/etc/resolv.conf": [
             "nameserver 208.67.222.222",
@@ -43,6 +40,7 @@
         "/home/chaos/.config/i3/config": [
             "bindsym $mod+d exec --no-startup-id i3-dmenu-desktop",
             "bindsym Ctrl+0 exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Return Down Down Down Return Up Up Up Return Escape Escape Escape",
+            "bindsym Ctrl+Shift+k exec --no-startup-id pkill qdre-compositor",
             "bindsym Ctrl+minus exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Down Return Down Down Down Return Up Up Up Return Escape Escape Escape",
             "bindsym Print exec --no-startup-id gnome-screenshot",
             "exec --no-startup-id /home/chaos/Documents/enterprise/autostart.sh",
@@ -59,7 +57,6 @@
             "include /usr/share/nano/*.nanorc"
         ],
         "/home/chaos/tmp/mh": [
-            "arch",
             "core_load",
             "core_load_change",
             "cpu_load_change",
@@ -67,41 +64,42 @@
             "cpu_power",
             "cpu_temp",
             "cpu_text = 3700 pro",
-            "engine_version",
             "fps_limit = 60,120,30",
-            "gamemode",
             "gpu_core_clock",
             "gpu_load_change",
             "gpu_mem_clock",
             "gpu_power",
             "gpu_temp",
-            "gpu_text = 3060 ti",
+            "gpu_text = 6600",
             "legacy_layout = false",
             "ram",
-            "show_fps_limit",
-            "time",
             "time_format = %F %T",
             "toggle_fps_limit = F9",
             "toggle_hud = F8",
-            "vkbasalt",
             "vram",
-            "vsync = 1",
+            "vsync = 2",
+            "time",
+            "arch",
+            "engine_version",
+            "gamemode",
+            "gpu_name",
+            "show_fps_limit",
+            "vkbasalt",
+            "vulkan_driver",
             "wine",
-            "exec = echo -n 'void linux, 3060 ti, '; cat /tmp/nvidia"
+            "custom_text = void linux"
+        ],
+        "/root/.bash_history": [
+            "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id='alisa'",
+            "grub-mkconfig -o /boot/grub/grub.cfg"
         ]
     },
     "commands": {},
     "replace": {
-        "/boot/grub/grub.cfg": [
-            [
-                "17ed0e6d-39ca-4083-8cc8-2ba31235f86c",
-                "bfab8272-b5a8-4eee-9338-230fb1386259"
-            ]
-        ],
         "/etc/default/grub": [
             [
                 "GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=4\"",
-                "GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=4 nvidia-drm.modeset=1\""
+                "GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=4 amdgpu.ppfeaturemask=0xffffffff mitigations=off\""
             ]
         ],
         "/etc/fstab": [
@@ -150,6 +148,12 @@
             [
                 "        status_command i3status",
                 "        position top\n        status_command i3status"
+            ]
+        ],
+        "/home/chaos/tmp/vkBasalt.conf": [
+            [
+                "toggleKey = Home",
+                "toggleKey = F7"
             ]
         ],
         "/usr/share/X11/xkb/keycodes/evdev": [
