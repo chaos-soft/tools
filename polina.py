@@ -6,13 +6,14 @@ import shutil
 import subprocess
 
 APPEND: dict[str, list[str]] = {}
+BASE_DIR: str = os.path.dirname(os.path.abspath(__file__))
 COMMANDS: dict[str, list[list[str]]] = {}
 FILES: set[str] = set()
 REPLACE: dict[str, list[list[str]]] = {}
 
 
 def backup() -> None:
-    backup_path = os.path.join(os.getcwd(), 'backup')
+    backup_path = os.path.join(BASE_DIR, 'backup')
     os.makedirs(backup_path, exist_ok=True)
     for file_path in FILES:
         print(f'backup {file_path}')
@@ -28,7 +29,7 @@ def get_choices() -> list[str]:
 
 def load_config() -> None:
     global APPEND, COMMANDS, FILES, REPLACE
-    with open('polina_config.json') as f:
+    with open(os.path.join(BASE_DIR, 'polina_config.json')) as f:
         data = json.load(f)
     APPEND |= data['append']
     COMMANDS |= data['commands']
@@ -60,7 +61,7 @@ def rebuild() -> None:
 def reset() -> None:
     for file_path in FILES:
         path, file = os.path.split(file_path)
-        backup_path = os.path.join(os.getcwd(), 'backup', file)
+        backup_path = os.path.join(BASE_DIR, 'backup', file)
         if os.path.isfile(backup_path):
             print(f'reset {file_path}')
             shutil.copy2(backup_path, path)
