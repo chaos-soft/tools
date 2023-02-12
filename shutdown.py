@@ -4,10 +4,10 @@ import os
 import time
 
 
-def main(time_str: str) -> None:
+def main(hour: int, min: int) -> None:
     while True:
         t = time.localtime()
-        if f'{t.tm_hour}:{t.tm_min}' == time_str:
+        if t.tm_hour == hour and t.tm_min == min:
             os.system('poweroff')
         time.sleep(60)
 
@@ -16,4 +16,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('time', type=str)
     args = parser.parse_args()
-    main(args.time)
+    hour, min = map(int, args.time.split(':'))
+    main(hour, min)

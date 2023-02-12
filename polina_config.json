@@ -22,7 +22,7 @@
             "autospawn = no"
         ],
         "/etc/rc.local": [
-            "# cpupower frequency-set -g performance"
+            "cpupower frequency-set -g performance"
         ],
         "/etc/resolv.conf": [
             "nameserver 208.67.222.222",
@@ -38,13 +38,12 @@
             "Type=Application"
         ],
         "/home/chaos/.config/i3/config": [
-            "bindsym $mod+d exec --no-startup-id i3-dmenu-desktop",
-            "bindsym Ctrl+0 exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Return Down Down Down Return Up Up Up Return Escape Escape Escape",
-            "bindsym Ctrl+Shift+k exec --no-startup-id pkill qdre-compositor",
-            "bindsym Ctrl+minus exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Down Return Down Down Down Return Up Up Up Return Escape Escape Escape",
-            "bindsym Print exec --no-startup-id gnome-screenshot",
+            "bindsym $mod+d exec --no-startup-id rofi -show drun",
+            "bindsym Ctrl+0 exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Return Down Down Down Down Return Up Up Up Return Escape Escape Escape",
+            "bindsym Ctrl+minus exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Down Return Down Down Down Down Return Up Up Up Return Escape Escape Escape",
+            "exec --no-startup-id xrandr --dpi 92",
             "exec --no-startup-id /home/chaos/Documents/enterprise/autostart.sh",
-            "exec --no-startup-id feh --bg-fill '/home/chaos/Pictures/Screenshot from 2021-04-20 01-58-49.png'",
+            "exec --no-startup-id feh --bg-fill '/home/chaos/Pictures/181222___ho_ho_ho_by_zfirrr_dcv1sh5.jpg'",
             "exec --no-startup-id firefox",
             "exec --no-startup-id setxkbmap -layout us,ru -option 'grp:caps_toggle,grp_led:scroll'",
             "exec --no-startup-id xset -dpms",
@@ -52,6 +51,9 @@
             "exec --no-startup-id xset s off",
             "hide_edge_borders both",
             "workspace_layout tabbed"
+        ],
+        "/home/chaos/.config/rofi/config.rasi": [
+            "@theme \"/usr/share/rofi/themes/Arc-Dark.rasi\""
         ],
         "/home/chaos/.nanorc": [
             "include /usr/share/nano/*.nanorc"
