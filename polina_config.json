@@ -6,17 +6,23 @@
         "/etc/environment": [
             "DXVK_ASYNC=1",
             "DXVK_LOG_LEVEL=none",
-            "DXVK_STATE_CACHE_PATH=/home/chaos/tmp/caches",
+            "DXVK_STATE_CACHE_PATH=/home/chaos/.cache/dxvk",
             "EDITOR=nano",
             "ENABLE_VKBASALT=1",
             "MANGOHUD=1",
             "MANGOHUD_CONFIGFILE=/home/chaos/tmp/mh",
+            "MESA_VK_WSI_PRESENT_MODE=mailbox",
             "QT_QPA_PLATFORMTHEME=qt5ct",
+            "RADV_TEX_ANISO=16",
+            "VK_INSTANCE_LAYERS=VK_LAYER_VKBASALT_post_processing:VK_LAYER_MANGOHUD_overlay",
             "VKBASALT_CONFIG_FILE=/home/chaos/tmp/vkBasalt.conf",
             "VKD3D_DEBUG=none"
         ],
         "/etc/fstab": [
             "LABEL=polina /mnt/polina ext4 defaults,noatime,nofail 0 3"
+        ],
+        "/etc/locale.conf": [
+            "LC_TIME=ru_RU.UTF-8"
         ],
         "/etc/pulse/client.conf": [
             "autospawn = no"
@@ -29,7 +35,8 @@
             "nameserver 208.67.220.220"
         ],
         "/etc/security/limits.conf": [
-            "* hard nofile 1048576"
+            "* hard nofile 65535",
+            "* soft nofile 65535"
         ],
         "/home/chaos/.config/autostart/autostart.desktop": [
             "[Desktop Entry]",
@@ -38,13 +45,14 @@
             "Type=Application"
         ],
         "/home/chaos/.config/i3/config": [
-            "bindsym $mod+d exec --no-startup-id rofi -show drun",
-            "bindsym Ctrl+0 exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Return Down Down Down Down Return Up Up Up Return Escape Escape Escape",
-            "bindsym Ctrl+minus exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Down Return Down Down Down Down Return Up Up Up Return Escape Escape Escape",
-            "exec --no-startup-id xrandr --dpi 92",
+            "bindsym Ctrl+equal exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Down Return Down Down Down Down Return Up Up Up Return Escape Escape Escape",
+            "bindsym Ctrl+minus exec --no-startup-id sleep 0.1 && xdotool key --delay 100 m Down Down Return Down Down Down Down Return Up Up Up Return Escape Escape Escape",
+            "bindsym Print exec --no-startup-id xfce4-screenshooter -f -s ~/Pictures/Screenshots/`date +'%Y%m%d-%H%M%S'`.png",
+            "exec --no-startup-id xrandr --dpi 96",
             "exec --no-startup-id /home/chaos/Documents/enterprise/autostart.sh",
-            "exec --no-startup-id feh --bg-fill '/home/chaos/Pictures/181222___ho_ho_ho_by_zfirrr_dcv1sh5.jpg'",
             "exec --no-startup-id firefox",
+            "exec --no-startup-id feh --bg-fill '/home/chaos/Pictures/Screenshots/20210420-015850.png'",
+            "exec --no-startup-id qdre-compositor",
             "exec --no-startup-id setxkbmap -layout us,ru -option 'grp:caps_toggle,grp_led:scroll'",
             "exec --no-startup-id xset -dpms",
             "exec --no-startup-id xset r rate 300",
@@ -66,7 +74,7 @@
             "cpu_power",
             "cpu_temp",
             "cpu_text = 3700 pro",
-            "fps_limit = 60,120,30",
+            "fps_limit = 60,120,0,30",
             "gpu_core_clock",
             "gpu_load_change",
             "gpu_mem_clock",
@@ -79,11 +87,8 @@
             "toggle_fps_limit = F9",
             "toggle_hud = F8",
             "vram",
-            "vsync = 2",
             "time",
             "arch",
-            "engine_version",
-            "gamemode",
             "gpu_name",
             "show_fps_limit",
             "vkbasalt",
@@ -117,7 +122,7 @@
         "/home/chaos/.config/i3/config": [
             [
                 "exec --no-startup-id nm-applet",
-                "# exec --no-startup-id nm-applet"
+                ""
             ],
             [
                 "XF86AudioRaiseVolume",
@@ -145,7 +150,7 @@
             ],
             [
                 "bindsym $mod+d exec --no-startup-id dmenu_run",
-                "# bindsym $mod+d exec --no-startup-id dmenu_run"
+                "bindsym $mod+d exec --no-startup-id rofi -show drun"
             ],
             [
                 "        status_command i3status",

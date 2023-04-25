@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 
 APPEND: dict[str, list[str]] = {}
 BASE_DIR: str = os.path.dirname(os.path.abspath(__file__))
@@ -80,11 +81,10 @@ def run_command(action: str) -> None:
 if __name__ == '__main__':
     load_config()
     parser = argparse.ArgumentParser()
-    parser.add_argument('action',
-                        choices=get_choices(),
-                        type=str)
+    parser.add_argument('action', choices=get_choices(), type=str)
     args = parser.parse_args()
     if args.action in globals():
         eval(f'{args.action}()')
     else:
         run_command(args.action)
+    sys.exit(0)
