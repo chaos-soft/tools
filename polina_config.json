@@ -1,0 +1,239 @@
+{
+    "append": {
+        "/etc/default/libc-locales": [
+            "ru_RU.UTF-8 UTF-8"
+        ],
+        "/etc/environment": [
+            "DXVK_LOG_LEVEL=none",
+            "DXVK_STATE_CACHE_PATH=/home/chaos/.cache/dxvk",
+            "EDITOR=nano",
+            "ENABLE_VKBASALT=1",
+            "MANGOHUD=1",
+            "MANGOHUD_CONFIGFILE=/home/chaos/tmp/mh",
+            "QT_QPA_PLATFORMTHEME=qt5ct",
+            "RADV_TEX_ANISO=16",
+            "VKBASALT_CONFIG_FILE=/home/chaos/tmp/vkBasalt.conf",
+            "VKD3D_DEBUG=none"
+        ],
+        "/etc/fstab": [
+            "LABEL=larka /mnt/larka ext4 defaults,noatime,nofail 0 3",
+            "LABEL=xxx1 /mnt/xxx1 ext4 defaults,noatime,nofail 0 4",
+            "LABEL=xxx2 /mnt/xxx2 ext4 defaults,noatime,nofail 0 5"
+        ],
+        "/etc/locale.conf": [
+            "LC_TIME=ru_RU.UTF-8"
+        ],
+        "/etc/rc.local": [
+            "cpupower frequency-set -g performance"
+        ],
+        "/etc/security/limits.conf": [
+            "* hard nofile 65535",
+            "* soft nofile 65535"
+        ],
+        "/etc/tor/torrc": [
+            "SocksPort 127.0.0.1:9100"
+        ],
+        "/home/chaos/.bashrc": [
+            "PS1='$? \\[\\e[1;32m\\]\\w\\[\\e[m\\] $ '",
+            "alias dcu='docker-compose up'",
+            "alias fs='VKD3D_CONFIG=no_upload_hvv firejail --net=none --noprofile steam'",
+            "alias gta5='WINEDLLOVERRIDES=winedbg.exe=d steam'",
+            "alias nrb='npm run build'",
+            "alias nrd='npm run dev'",
+            "alias pr='sudo ~/Documents/python/tools/polina.py rebuild'",
+            "alias tr1='pp_jimenezmlaa_color=8 firejail --net=none --noprofile mangohud steam'"
+        ],
+        "/home/chaos/.config/rofi/config.rasi": [
+            "@theme \"/usr/share/rofi/themes/Arc-Dark.rasi\""
+        ],
+        "/home/chaos/.config/sway/config": [
+            "bindsym $mod+g exec gthumb",
+            "bindsym $mod+m exec gnome-system-monitor",
+            "bindsym $mod+n exec nautilus",
+            "bindsym $mod+s exec subl4",
+            "bindsym Ctrl+F10 exec amixer set Capture toggle",
+            "bindsym F10 exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+            "bindsym F11 exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+            "bindsym F12 exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
+            "bindsym Print exec grim ~/Pictures/Screenshots/`date +'%Y%m%d-%H%M%S'`.png",
+            "bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+            "bindsym XF86AudioPlay exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
+            "bindsym XF86HomePage exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+            "client.focused #d8dee9e6 #d8dee9e6 #000000",
+            "client.focused_inactive #00000080 #00000080 #d8dee9",
+            "client.unfocused #00000080 #00000080 #d8dee9",
+            "default_border none",
+            "exec /usr/libexec/xfce-polkit",
+            "exec corectrl",
+            "exec firefox",
+            "exec pipewire",
+            "font pango:Lucida Grande 9",
+            "hide_edge_borders both",
+            "input type:keyboard repeat_delay 300",
+            "input type:keyboard xkb_layout us,ru",
+            "input type:keyboard xkb_options grp:caps_toggle,grp_led:scroll",
+            "input type:pointer accel_profile flat",
+            "input type:pointer pointer_accel -0.3",
+            "output * subpixel none",
+            "seat * hide_cursor when-typing enable",
+            "seat * xcursor_theme Adwaita",
+            "titlebar_padding 5 3",
+            "workspace_layout tabbed"
+        ],
+        "/home/chaos/.nanorc": [
+            "include /usr/share/nano/*.nanorc"
+        ],
+        "/home/chaos/tmp/mh": [
+            "core_load",
+            "core_load_change",
+            "cpu_load_change",
+            "cpu_mhz",
+            "cpu_power",
+            "cpu_temp",
+            "cpu_text = 3700 pro",
+            "fps_limit = 60,120,0,30",
+            "gl_vsync = 0",
+            "gpu_core_clock",
+            "gpu_junction_temp",
+            "gpu_load_change",
+            "gpu_mem_clock",
+            "gpu_mem_temp",
+            "gpu_power",
+            "gpu_text = 6600",
+            "legacy_layout = false",
+            "ram",
+            "swap",
+            "time_format = %F %T",
+            "toggle_fps_limit = F9",
+            "toggle_hud = F8",
+            "vram",
+            "vsync = 2",
+            "time",
+            "arch",
+            "gpu_name",
+            "show_fps_limit",
+            "vkbasalt",
+            "vulkan_driver",
+            "wine",
+            "custom_text = linux, void, gnome, x11"
+        ],
+        "/root/.bash_history": [
+            "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id='alisa'",
+            "grub-mkconfig -o /boot/grub/grub.cfg"
+        ],
+        "/usr/lib/udev/rules.d/99-8bitdo-xinput.rules": [
+            "ACTION==\"add\", ATTRS{idVendor}==\"2dc8\", ATTRS{idProduct}==\"3106\", RUN+=\"/sbin/modprobe xpad\", RUN+=\"/bin/sh -c 'echo 2dc8 3106 > /sys/bus/usb/drivers/xpad/new_id'\""
+        ]
+    },
+    "insert": {
+        "/home/chaos/.config/sway/config": {
+            "214": [
+                "        focused_workspace #d8dee9e6 #d8dee9e6 #000000"
+            ],
+            "205": [
+                "    height 21",
+                "    tray_output none"
+            ]
+        }
+    },
+    "replace": {
+        "/etc/default/grub": [
+            [
+                "GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=4\"",
+                "GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=4 amdgpu.ppfeaturemask=0xffffffff mitigations=off\""
+            ]
+        ],
+        "/etc/fstab": [
+            [
+                "UUID=0da6b967-e7cf-4534-af7e-73a34fc5efc0 / ext4 defaults 0 1",
+                "UUID=0da6b967-e7cf-4534-af7e-73a34fc5efc0 / ext4 defaults,noatime 0 1"
+            ]
+        ],
+        "/home/chaos/.config/gtk-4.0/gtk.css": [
+            [
+                "#8FBCBB",
+                "#81a1c1"
+            ]
+        ],
+        "/home/chaos/.config/sway/config": [
+            [
+                "bindsym $mod+Shift+q kill",
+                "bindsym Ctrl+q kill"
+            ],
+            [
+                "dmenu_path | dmenu",
+                "rofi -show drun"
+            ],
+            [
+                "/usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png",
+                "/home/chaos/Pictures/181222___ho_ho_ho_by_zfirrr_dcv1sh5.jpg"
+            ],
+            [
+                "date +'%Y-%m-%d %I:%M:%S %p'",
+                "date +'%Y-%m-%d %H:%M %p'"
+            ],
+            [
+                "background #323232",
+                "background #00000080"
+            ],
+            [
+                "inactive_workspace #32323200 #32323200 #5c5c5c",
+                "inactive_workspace #00000080 #00000080 #d8dee9"
+            ],
+            [
+                "statusline #ffffff",
+                "statusline #d8dee9"
+            ],
+            [
+                "set $term foot",
+                "set $term konsole"
+            ],
+            [
+                "bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'",
+                "bindsym $mod+Shift+e exec 'pkill pipewire; swaymsg exit'"
+            ],
+            [
+                "bindsym $mod+s layout stacking",
+                ""
+            ]
+        ],
+        "/home/chaos/tmp/vkBasalt.conf": [
+            [
+                "toggleKey = Home",
+                "toggleKey = F7"
+            ],
+            [
+                "effects = cas",
+                "effects = smaa:smaa:cas"
+            ]
+        ],
+        "/usr/share/vulkan/implicit_layer.d/MangoHud.x86.json": [
+            [
+                "lib64",
+                "lib32"
+            ]
+        ],
+        "/usr/share/X11/xkb/keycodes/evdev": [
+            [
+                "<RCTL> = 105;",
+                "<INS> = 105;"
+            ],
+            [
+                "<INS> = 118;",
+                "<RCTL> = 118;"
+            ],
+            [
+                "<PGUP> = 112;",
+                "<PGDN> = 112;"
+            ],
+            [
+                "<END> = 115;",
+                "<PGUP> = 115;"
+            ],
+            [
+                "<PGDN> = 117;",
+                "<END> = 117;"
+            ]
+        ]
+    }
+}
