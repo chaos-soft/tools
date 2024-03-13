@@ -20,7 +20,7 @@ def load_config() -> None:
 
 def main() -> int:
     try:
-        args = ['nvidia-settings', '-a', 'GPUFanControlState=1']
+        args = ['nvidia-settings', '-a', '[gpu]/GPUFanControlState=1']
         subprocess.run(args, check=True)
         while True:
             args = ['nvidia-settings', '-q', 'GPUCoreTemp', '-t']
@@ -43,7 +43,7 @@ def set_fan_speed(fs: int) -> None:
     global fan_speed
     if fan_speed != fs:
         fan_speed = fs
-        args = ['nvidia-settings', '-a', f'GPUTargetFanSpeed={fan_speed}']
+        args = ['nvidia-settings', '-a', f'[fan]/GPUTargetFanSpeed={fan_speed}']
         subprocess.run(args, check=True)
 
 
