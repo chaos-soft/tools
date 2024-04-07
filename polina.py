@@ -7,7 +7,7 @@ import sys
 
 BASE_DIR = Path(__file__).resolve().parent
 APPEND: dict[str, list[str]] = {}
-BACKUP_PATH = BASE_DIR / 'backup'
+BACKUP_PATH: Path = BASE_DIR / 'backup'
 FILES: set[str] = set()
 INSERT: dict[str, dict[str, list[str]]] = {}
 REPLACE: dict[str, list[list[str]]] = {}
