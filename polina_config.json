@@ -4,6 +4,7 @@
             "ru_RU.UTF-8 UTF-8"
         ],
         "/etc/environment": [
+            "BC_FONT_SCALE=1.02",
             "DXVK_LOG_LEVEL=none",
             "DXVK_STATE_CACHE_PATH=/home/chaos/.cache/dxvk",
             "EDITOR=nano",
@@ -11,18 +12,16 @@
             "MANGOHUD=1",
             "MANGOHUD_CONFIGFILE=/home/chaos/tmp/mh",
             "QT_QPA_PLATFORMTHEME=qt5ct",
+            "QT_WAYLAND_DISABLE_WINDOWDECORATION=1",
             "RADV_TEX_ANISO=16",
             "VKBASALT_CONFIG_FILE=/home/chaos/tmp/vkBasalt.conf",
+            "VKD3D_CONFIG=no_upload_hvv",
             "VKD3D_DEBUG=none"
         ],
         "/etc/fstab": [
             "LABEL=larka /mnt/larka ext4 defaults,noatime,nofail 0 3",
             "LABEL=xxx1 /mnt/xxx1 ext4 defaults,noatime,nofail 0 4",
             "LABEL=xxx2 /mnt/xxx2 ext4 defaults,noatime,nofail 0 5"
-        ],
-        "/etc/lightdm/lightdm-gtk-greeter.conf": [
-            "background=/usr/share/backgrounds/20210420-015850.png",
-            "user-background=false"
         ],
         "/etc/locale.conf": [
             "LC_TIME=ru_RU.UTF-8"
@@ -31,13 +30,17 @@
             "cpupower frequency-set -g performance"
         ],
         "/etc/security/limits.conf": [
-            "* hard nofile 65535",
-            "* soft nofile 65535"
+            "* hard nofile 524288",
+            "* soft nofile 524288"
+        ],
+        "/etc/sv/zramen/conf": [
+            "export ZRAM_MAX_SIZE=16384",
+            "export ZRAM_SIZE=100"
         ],
         "/home/chaos/.bashrc": [
             "PS1='$? \\[\\e[1;32m\\]\\w\\[\\e[m\\] $ '",
             "alias dc='docker-compose'",
-            "alias fs='VKD3D_CONFIG=no_upload_hvv firejail --net=none --noprofile steam'",
+            "alias fs='firejail --net=none --noprofile steam'",
             "alias gta5='WINEDLLOVERRIDES=winedbg.exe=d steam'",
             "alias nrb='npm run build'",
             "alias nrd='npm run dev'",
@@ -45,59 +48,41 @@
             "alias tr1='pp_jimenezmlaa_color=8 firejail --net=none --noprofile mangohud steam'"
         ],
         "/home/chaos/.config/gtk-4.0/settings.ini": [
-            "gtk-font-name=Sans 10.4"
+            "gtk-application-prefer-dark-theme=1",
+            "gtk-font-name=Sans 10.2"
         ],
         "/home/chaos/.config/i3/config": [
+            "$i3",
+            "bindsym $mod+p exec --no-startup-id picom --backend glx --vsync -b",
             "bindsym Print exec --no-startup-id xfce4-screenshooter -f -s ~/Pictures/Screenshots/`date +'%Y%m%d-%H%M%S'`.png",
-            "exec --no-startup-id /usr/libexec/xfce-polkit",
-            "exec --no-startup-id corectrl",
-            "exec --no-startup-id firefox",
-            "exec --no-startup-id pipewire",
+            "exec --no-startup-id feh --bg-fill '/home/chaos/Pictures/Screenshots/20210420-015850.png'",
             "exec --no-startup-id setxkbmap -layout us,ru -option 'grp:caps_toggle,grp_led:scroll'",
-            "exec --no-startup-id xinput --set-prop 'Logitech G500s Laser Gaming Mouse' 'libinput Accel Profile Enabled' 0 1",
-            "exec --no-startup-id xinput --set-prop 'Logitech G500s Laser Gaming Mouse' 'libinput Accel Speed' -0.3",
+            "exec --no-startup-id xinput set-prop 'HID 1d57:ad03 Mouse' 'libinput Accel Profile Enabled' 0 1",
+            "exec --no-startup-id xinput set-prop 'HID 1d57:ad03 Mouse' 'libinput Accel Speed' -0.3",
+            "exec --no-startup-id xinput set-prop 'Logitech G500s Laser Gaming Mouse' 'libinput Accel Profile Enabled' 0 1",
+            "exec --no-startup-id xinput set-prop 'Logitech G500s Laser Gaming Mouse' 'libinput Accel Speed' -0.3",
             "exec --no-startup-id xset -dpms",
             "exec --no-startup-id xset r rate 300",
-            "exec --no-startup-id xset s off",
-            "hide_edge_borders both",
-            "workspace_layout tabbed"
+            "exec --no-startup-id xset s off"
         ],
         "/home/chaos/.config/rofi/config.rasi": [
             "@theme \"/usr/share/rofi/themes/Arc-Dark.rasi\""
         ],
         "/home/chaos/.config/sway/config": [
-            "# seat * hide_cursor when-typing enable",
-            "bindsym $mod+g exec gthumb",
-            "bindsym $mod+m exec gnome-system-monitor",
-            "bindsym $mod+n exec nautilus",
-            "bindsym $mod+s exec subl4",
-            "bindsym Ctrl+F10 exec amixer set Capture toggle",
-            "bindsym F10 exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-            "bindsym F11 exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
-            "bindsym F12 exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
+            "$i3",
             "bindsym Print exec grim ~/Pictures/Screenshots/`date +'%Y%m%d-%H%M%S'`.png",
-            "bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-            "bindsym XF86AudioPlay exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
-            "bindsym XF86HomePage exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
             "client.focused #d8dee9e6 #d8dee9e6 #000000",
             "client.focused_inactive #00000080 #00000080 #d8dee9",
             "client.unfocused #00000080 #00000080 #d8dee9",
-            "default_border none",
-            "exec /usr/libexec/xfce-polkit",
-            "exec corectrl",
-            "exec firefox",
-            "exec pipewire",
-            "font pango:Lucida Grande 9",
-            "hide_edge_borders both",
             "input type:keyboard repeat_delay 300",
             "input type:keyboard xkb_layout us,ru",
             "input type:keyboard xkb_options grp:caps_toggle,grp_led:scroll",
             "input type:pointer accel_profile flat",
             "input type:pointer pointer_accel -0.3",
             "output * subpixel none",
+            "seat * hide_cursor when-typing enable",
             "seat * xcursor_theme Adwaita",
-            "titlebar_padding 5 3",
-            "workspace_layout tabbed"
+            "titlebar_padding 5 2"
         ],
         "/home/chaos/.nanorc": [
             "include /usr/share/nano/*.nanorc"
@@ -123,6 +108,7 @@
             "gpu_mem_temp",
             "gpu_power",
             "gpu_text = 6600",
+            "histogram",
             "legacy_layout = false",
             "ram",
             "swap",
@@ -133,7 +119,9 @@
             "vsync = 2",
             "time",
             "arch",
+            "gamemode",
             "gpu_name",
+            "present_mode",
             "show_fps_limit",
             "vkbasalt",
             "vulkan_driver",
@@ -149,21 +137,44 @@
         ]
     },
     "insert": {
-        "/home/chaos/.config/sway/config": {
+        "/home/chaos/.config/gtk-4.0/gtk.css": {
+            "149": [
+                "  background-color: @window_bg_color;",
+                "  color: @window_fg_color;"
+            ]
+        },
         "/home/chaos/.config/i3/config": {
             "190": [
                 "        position top",
                 "        tray_output none"
             ]
         },
+        "/home/chaos/.config/sway/config": {
             "214": [
                 "        focused_workspace #d8dee9e6 #d8dee9e6 #000000"
             ],
             "205": [
-                "    height 21",
+                "    height 19",
                 "    tray_output none"
             ]
         }
+    },
+    "remove": {
+        "/etc/fstab": [
+            "UUID=55a29bbc-050c-469a-9b7e-375cf0ca47b9 none swap defaults 0 0"
+        ],
+        "/home/chaos/.config/i3/config": [
+            "bindsym $mod+l focus up",
+            "bindsym $mod+s layout stacking",
+            "bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status",
+            "bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status",
+            "bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status",
+            "bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status",
+            "exec --no-startup-id nm-applet"
+        ],
+        "/home/chaos/.config/sway/config": [
+            "bindsym $mod+s layout stacking"
+        ]
     },
     "replace": {
         "/etc/default/grub": [
@@ -182,30 +193,13 @@
             [
                 "#8FBCBB",
                 "#81a1c1"
+            ],
+            [
+                ".sidebar",
+                ".sidebar-pane"
             ]
         ],
-        "/home/chaos/.config/sway/config": [
         "/home/chaos/.config/i3/config": [
-            [
-                "exec --no-startup-id nm-applet",
-                ""
-            ],
-            [
-                "bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status",
-                "bindsym F12 exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-            ],
-            [
-                "bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status",
-                "bindsym F11 exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-            ],
-            [
-                "bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status",
-                "bindsym F10 exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-            ],
-            [
-                "bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status",
-                "bindsym Ctrl+F10 exec --no-startup-id amixer set Capture toggle"
-            ],
             [
                 "bindsym $mod+Return exec i3-sensible-terminal",
                 "bindsym $mod+Return exec konsole"
@@ -224,15 +218,16 @@
             ],
             [
                 "status_command i3status",
-                "status_command while date +'%Y-%m-%d %H:%M %p'; do sleep 1; done"
+                "status_command while ~/Documents/enterprise/status_command.sh; do sleep 1; done"
             ]
         ],
+        "/home/chaos/.config/sway/config": [
             [
                 "bindsym $mod+Shift+q kill",
                 "bindsym Ctrl+q kill"
             ],
             [
-                "dmenu_path | dmenu",
+                "dmenu_path | wmenu",
                 "rofi -show drun"
             ],
             [
@@ -240,8 +235,8 @@
                 "/home/chaos/Pictures/Screenshots/20210420-015850.png"
             ],
             [
-                "date +'%Y-%m-%d %I:%M:%S %p'",
-                "date +'%Y-%m-%d %H:%M %p'"
+                "date +'%Y-%m-%d %X'",
+                "~/Documents/enterprise/status_command.sh"
             ],
             [
                 "background #323232",
@@ -264,8 +259,12 @@
                 "bindsym $mod+Shift+e exec 'pkill pipewire; swaymsg exit'"
             ],
             [
-                "bindsym $mod+s layout stacking",
-                ""
+                "bindsym $mod+$left focus left",
+                "bindsym --whole-window $mod+button4 focus left"
+            ],
+            [
+                "bindsym $mod+$right focus right",
+                "bindsym --whole-window $mod+button5 focus right"
             ]
         ],
         "/home/chaos/tmp/vkBasalt.conf": [
@@ -275,7 +274,7 @@
             ],
             [
                 "effects = cas",
-                "effects = smaa:smaa:cas"
+                "effects = cas"
             ]
         ],
         "/usr/share/vulkan/implicit_layer.d/MangoHud.x86.json": [
@@ -305,6 +304,33 @@
                 "<PGDN> = 117;",
                 "<END> = 117;"
             ]
+        ]
+    },
+    "variables": {
+        "$i3": [
+            "bindsym $mod+c exec --no-startup-id ~/Downloads/CinGG-20240229-x86_64.AppImage",
+            "bindsym $mod+g exec --no-startup-id gthumb",
+            "bindsym $mod+l exec --no-startup-id firejail --net=none --noprofile lutris",
+            "bindsym $mod+m exec --no-startup-id xfce4-taskmanager",
+            "bindsym $mod+n exec --no-startup-id nautilus",
+            "bindsym $mod+s exec --no-startup-id subl4",
+            "bindsym $mod+Shift+g exec --no-startup-id gitg",
+            "bindsym $mod+t exec --no-startup-id touch -m /tmp/tzj",
+            "bindsym Ctrl+F10 exec --no-startup-id amixer set Capture toggle",
+            "bindsym F10 exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+            "bindsym F11 exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 6%-",
+            "bindsym F12 exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 6%+",
+            "bindsym XF86AudioMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+            "bindsym XF86AudioPlay exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 6%+",
+            "bindsym XF86HomePage exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 6%-",
+            "default_border none",
+            "exec --no-startup-id /usr/libexec/xfce-polkit",
+            "exec --no-startup-id corectrl",
+            "exec --no-startup-id firefox",
+            "exec --no-startup-id pipewire",
+            "font pango:Lucida Grande 9",
+            "hide_edge_borders both",
+            "workspace_layout tabbed"
         ]
     }
 }

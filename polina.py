@@ -11,16 +11,20 @@ BACKUP_PATH: Path = BASE_DIR / 'backup'
 FILES: set[str] = set()
 INSERT: dict[str, dict[str, list[str]]] = {}
 REPLACE: dict[str, list[list[str]]] = {}
+VARIABLES: dict[str, list[str]] = {}
 
 
 def append() -> None:
     v: list[str]
     for file_path, v in APPEND.items():
+        str_ = '\n'.join(v)
+        for var, vv in VARIABLES.items():
+            if var in str_:
+                str_ = str_.replace(var, '\n'.join(vv))
         print(f'append {file_path}')
         Path(file_path).parent.mkdir(mode=0o755, parents=True, exist_ok=True)
         with open(file_path, 'a') as f:
-            f.write('\n'.join(v))
-            f.write('\n')
+            f.write(f'{str_}\n')
 
 
 def backup() -> None:
@@ -29,7 +33,11 @@ def backup() -> None:
         fp = Path(file_path)
         if fp.exists() and not (BACKUP_PATH / fp.name).exists():
             print(f'backup {file_path}')
-            subprocess.run(['cp', '-rp', file_path, BACKUP_PATH], check=True)
+            subprocess.run(['cp', '-rp', file_path, BACKUP_PATH / get_backup_name(file_path)], check=True)
+
+
+def get_backup_name(file_path: str) -> str:
+    return file_path.replace('/', '__').lstrip('__')
 
 
 def insert() -> None:
@@ -46,7 +54,7 @@ def insert() -> None:
 
 
 def load_config() -> None:
-    global APPEND, COMMANDS, FILES, INSERT, REPLACE
+    global APPEND, COMMANDS, FILES, INSERT, REPLACE, VARIABLES
     with open(BASE_DIR / 'polina_config.json') as f:
         data = json.load(f)
     if 'append' in data:
@@ -58,6 +66,15 @@ def load_config() -> None:
     if 'replace' in data:
         REPLACE |= data['replace']
         FILES |= set(REPLACE.keys())
+    if 'variables' in data:
+        VARIABLES |= data['variables']
+    if 'remove' in data:
+        for k, v in data['remove'].items():
+            list_ = [[vv, ''] for vv in v]
+            if k in REPLACE:
+                REPLACE[k].extend(list_)
+            else:
+                REPLACE[k] = list_
 
 
 def rebuild() -> None:
@@ -84,11 +101,11 @@ def replace() -> None:
 def reset() -> None:
     for file_path in FILES:
         fp = Path(file_path)
-        bp = BACKUP_PATH / fp.name
+        bp = BACKUP_PATH / get_backup_name(file_path)
         if bp.exists():
             print(f'reset {file_path}')
             fp.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
-            subprocess.run(['cp', '-rp', bp, fp.parent], check=True)
+            subprocess.run(['cp', '-rp', bp, fp], check=True)
         elif fp.exists():
             s = input(f'rm {file_path}? [Y/n] ') or 'Y'
             if s == 'Y':
