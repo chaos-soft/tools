@@ -37,7 +37,7 @@ def backup() -> None:
     BACKUP_PATH.mkdir(mode=0o755, parents=True, exist_ok=True)
     for file_path in FILES:
         fp = Path(file_path)
-        if fp.exists() and not (BACKUP_PATH / fp.name).exists():
+        if fp.exists() and not (BACKUP_PATH / get_backup_name(file_path)).exists():
             print(f'backup {file_path}')
             subprocess.run(['cp', '-rp', file_path, BACKUP_PATH / get_backup_name(file_path)], check=True)
 
