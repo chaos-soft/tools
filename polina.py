@@ -10,17 +10,23 @@ APPEND: dict[str, list[str]] = {}
 BACKUP_PATH: Path = BASE_DIR / 'backup'
 FILES: set[str] = set()
 INSERT: dict[str, dict[str, list[str]]] = {}
+IS_REVERSE: bool = False
 REPLACE: dict[str, list[list[str]]] = {}
 VARIABLES: dict[str, list[str]] = {}
+
+
+def add2replace(k, list_) -> None:
+    if k in REPLACE:
+        REPLACE[k].extend(list_)
+    else:
+        REPLACE[k] = list_
 
 
 def append() -> None:
     v: list[str]
     for file_path, v in APPEND.items():
         str_ = '\n'.join(v)
-        for var, vv in VARIABLES.items():
-            if var in str_:
-                str_ = str_.replace(var, '\n'.join(vv))
+        str_ = replace_variables(str_)
         print(f'append {file_path}')
         Path(file_path).parent.mkdir(mode=0o755, parents=True, exist_ok=True)
         with open(file_path, 'a') as f:
@@ -57,6 +63,30 @@ def load_config() -> None:
     global APPEND, COMMANDS, FILES, INSERT, REPLACE, VARIABLES
     with open(BASE_DIR / 'polina_config.json') as f:
         data = json.load(f)
+    if IS_REVERSE:
+        if 'variables' in data:
+            VARIABLES |= data['variables']
+        if 'append' in data:
+            for k, v in data['append'].items():
+                str_ = '\n'.join(v)
+                str_ = replace_variables(str_)
+                list_ = [[f'{str_}\n', '']]
+                add2replace(k, list_)
+            FILES |= set(REPLACE.keys())
+        if 'insert' in data:
+            for k, v in data['insert'].items():
+                list_ = [['{}\n'.format('\n'.join(vv)), ''] for vv in v.values()]
+                add2replace(k, list_)
+            FILES |= set(REPLACE.keys())
+        if 'replace' in data:
+            for k, v in data['replace'].items():
+                list_ = [[vv[1], vv[0]] for vv in v]
+                add2replace(k, list_)
+            FILES |= set(REPLACE.keys())
+        if 'remove' in data:
+            APPEND |= data['remove']
+            FILES |= set(APPEND.keys())
+        return None
     if 'append' in data:
         APPEND |= data['append']
         FILES |= set(APPEND.keys())
@@ -71,10 +101,8 @@ def load_config() -> None:
     if 'remove' in data:
         for k, v in data['remove'].items():
             list_ = [[vv, ''] for vv in v]
-            if k in REPLACE:
-                REPLACE[k].extend(list_)
-            else:
-                REPLACE[k] = list_
+            add2replace(k, list_)
+        FILES |= set(REPLACE.keys())
 
 
 def rebuild() -> None:
@@ -96,6 +124,13 @@ def replace() -> None:
                 f.seek(0)
                 f.write(data)
                 f.truncate()
+
+
+def replace_variables(str_: str) -> str:
+    for var, v in VARIABLES.items():
+        if var in str_:
+            str_ = str_.replace(var, '\n'.join(v))
+    return str_
 
 
 def reset() -> None:
