@@ -11,7 +11,7 @@
             "ENABLE_VKBASALT=1",
             "MANGOHUD=1",
             "MANGOHUD_CONFIGFILE=/home/chaos/tmp/mh",
-            "QT_QPA_PLATFORMTHEME=qt5ct",
+            "QT_QPA_PLATFORMTHEME=qt6ct",
             "QT_WAYLAND_DISABLE_WINDOWDECORATION=1",
             "RADV_TEX_ANISO=16",
             "VKBASALT_CONFIG_FILE=/home/chaos/tmp/vkBasalt.conf",
@@ -27,7 +27,7 @@
             "LC_TIME=ru_RU.UTF-8"
         ],
         "/etc/rc.local": [
-            "cpupower frequency-set -g performance"
+            "# cpupower frequency-set -g performance"
         ],
         "/etc/security/limits.conf": [
             "* hard nofile 524288",
@@ -69,20 +69,17 @@
             "@theme \"/usr/share/rofi/themes/Arc-Dark.rasi\""
         ],
         "/home/chaos/.config/sway/config": [
+            "# seat * hide_cursor when-typing enable",
             "$i3",
             "bindsym Print exec grim ~/Pictures/Screenshots/`date +'%Y%m%d-%H%M%S'`.png",
-            "client.focused #d8dee9e6 #d8dee9e6 #000000",
-            "client.focused_inactive #00000080 #00000080 #d8dee9",
-            "client.unfocused #00000080 #00000080 #d8dee9",
             "input type:keyboard repeat_delay 300",
             "input type:keyboard xkb_layout us,ru",
             "input type:keyboard xkb_options grp:caps_toggle,grp_led:scroll",
             "input type:pointer accel_profile flat",
             "input type:pointer pointer_accel -0.3",
             "output * subpixel none",
-            "seat * hide_cursor when-typing enable",
             "seat * xcursor_theme Adwaita",
-            "titlebar_padding 5 2"
+            "titlebar_padding 5 3"
         ],
         "/home/chaos/.nanorc": [
             "include /usr/share/nano/*.nanorc"
@@ -122,6 +119,7 @@
             "gamemode",
             "gpu_name",
             "present_mode",
+            "resolution",
             "show_fps_limit",
             "vkbasalt",
             "vulkan_driver",
@@ -145,16 +143,23 @@
         },
         "/home/chaos/.config/i3/config": {
             "190": [
+                "        colors {",
+                "                background #2e3440e6",
+                "                focused_workspace #4c566ae6 #4c566ae6 #eceff4",
+                "                inactive_workspace #2e3440e6 #2e3440e6 #d8dee9",
+                "                statusline #d8dee9",
+                "        }",
+                "        i3bar_command i3bar --transparency",
                 "        position top",
                 "        tray_output none"
             ]
         },
         "/home/chaos/.config/sway/config": {
             "214": [
-                "        focused_workspace #d8dee9e6 #d8dee9e6 #000000"
+                "        focused_workspace #4c566ae6 #4c566ae6 #eceff4"
             ],
             "205": [
-                "    height 19",
+                "    height 22",
                 "    tray_output none"
             ]
         }
@@ -202,7 +207,7 @@
         "/home/chaos/.config/i3/config": [
             [
                 "bindsym $mod+Return exec i3-sensible-terminal",
-                "bindsym $mod+Return exec konsole"
+                "bindsym $mod+Return exec xfce4-terminal -e ranger"
             ],
             [
                 "bindsym $mod+Shift+q kill",
@@ -240,11 +245,11 @@
             ],
             [
                 "background #323232",
-                "background #00000080"
+                "background #2e3440e6"
             ],
             [
                 "inactive_workspace #32323200 #32323200 #5c5c5c",
-                "inactive_workspace #00000080 #00000080 #d8dee9"
+                "inactive_workspace #2e3440e6 #2e3440e6 #d8dee9"
             ],
             [
                 "statusline #ffffff",
@@ -252,7 +257,7 @@
             ],
             [
                 "set $term foot",
-                "set $term konsole"
+                "set $term xfce4-terminal -e ranger"
             ],
             [
                 "bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'",
@@ -275,6 +280,12 @@
             [
                 "effects = cas",
                 "effects = cas"
+            ]
+        ],
+        "/usr/share/thumbnailers/ffmpegthumbnailer.thumbnailer": [
+            [
+                "Exec=ffmpegthumbnailer -i %i -o %o -s %s -f",
+                "Exec=ffmpegthumbnailer -i %i -o %o -s 256"
             ]
         ],
         "/usr/share/vulkan/implicit_layer.d/MangoHud.x86.json": [
@@ -308,11 +319,11 @@
     },
     "variables": {
         "$i3": [
-            "bindsym $mod+c exec --no-startup-id ~/Downloads/CinGG-20240229-x86_64.AppImage",
+            "bindsym $mod+c exec --no-startup-id ~/tmp/CinGG-20240229-x86_64.AppImage",
             "bindsym $mod+g exec --no-startup-id gthumb",
             "bindsym $mod+l exec --no-startup-id firejail --net=none --noprofile lutris",
             "bindsym $mod+m exec --no-startup-id xfce4-taskmanager",
-            "bindsym $mod+n exec --no-startup-id nautilus",
+            "bindsym $mod+n exec --no-startup-id caja",
             "bindsym $mod+s exec --no-startup-id subl4",
             "bindsym $mod+Shift+g exec --no-startup-id gitg",
             "bindsym $mod+t exec --no-startup-id touch -m /tmp/tzj",
@@ -323,6 +334,9 @@
             "bindsym XF86AudioMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
             "bindsym XF86AudioPlay exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 6%+",
             "bindsym XF86HomePage exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 6%-",
+            "client.focused #4c566ae6 #4c566ae6 #eceff4",
+            "client.focused_inactive #2e3440e6 #2e3440e6 #d8dee9",
+            "client.unfocused #2e3440e6 #2e3440e6 #d8dee9",
             "default_border none",
             "exec --no-startup-id /usr/libexec/xfce-polkit",
             "exec --no-startup-id corectrl",
