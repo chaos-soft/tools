@@ -12,7 +12,6 @@
             "MANGOHUD=1",
             "MANGOHUD_CONFIGFILE=/home/chaos/tmp/mh",
             "QT_QPA_PLATFORMTHEME=qt6ct",
-            "QT_WAYLAND_DISABLE_WINDOWDECORATION=1",
             "RADV_TEX_ANISO=16",
             "VKBASALT_CONFIG_FILE=/home/chaos/tmp/vkBasalt.conf",
             "VKD3D_CONFIG=no_upload_hvv",
@@ -53,7 +52,8 @@
         ],
         "/home/chaos/.config/i3/config": [
             "$i3",
-            "bindsym $mod+p exec --no-startup-id picom --backend glx --vsync -b",
+            "bindsym $mod+p exec --no-startup-id xrandr --output HDMI-A-0 --set TearFree on",
+            "bindsym $mod+Shift+p exec --no-startup-id xrandr --output HDMI-A-0 --set TearFree off",
             "bindsym Print exec --no-startup-id xfce4-screenshooter -f -s ~/Pictures/Screenshots/`date +'%Y%m%d-%H%M%S'`.png",
             "exec --no-startup-id feh --bg-fill '/home/chaos/Pictures/Screenshots/20210420-015850.png'",
             "exec --no-startup-id setxkbmap -layout us,ru -option 'grp:caps_toggle,grp_led:scroll'",
@@ -280,6 +280,16 @@
             [
                 "effects = cas",
                 "effects = cas"
+            ]
+        ],
+        "/usr/share/gimp/2.0/themes/Dark/gtkrc": [
+            [
+                "#  font_name = \"Sans 11\"",
+                "font_name = \"Sans 10.2\""
+            ],
+            [
+                "GimpDock::font-scale = 0.8333",
+                "GimpDock::font-scale = 0.87"
             ]
         ],
         "/usr/share/thumbnailers/ffmpegthumbnailer.thumbnailer": [
