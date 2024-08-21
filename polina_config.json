@@ -60,8 +60,6 @@
             "}"
         ],
         "/home/chaos/.config/i3/config": [
-            "# exec --no-startup-id xinput set-button-map 9 1 2 8 4 5 6 7 3 9 10 11 12",
-            "# exec --no-startup-id xinput set-prop 9 'libinput Accel Profile Enabled' 0 1",
             "$i3",
             "bindsym $mod+Shift+p exec --no-startup-id picom --backend glx",
             "bindsym Print exec --no-startup-id xfce4-screenshooter -f -s ~/Pictures/Screenshots/`date +'%Y%m%d-%H%M%S'`.png",
@@ -81,8 +79,6 @@
             "@theme \"/usr/share/rofi/themes/Arc-Dark.rasi\""
         ],
         "/home/chaos/.config/sway/config": [
-            "# bindsym --whole-window button8 seat - cursor press button3",
-            "# seat * hide_cursor when-typing enable",
             "$i3",
             "bindsym --whole-window button8 exec wtype -k page_down",
             "bindsym --whole-window button9 exec wtype -k page_up",
