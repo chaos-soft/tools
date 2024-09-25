@@ -10,6 +10,8 @@
             "ENABLE_VKBASALT=1",
             "MANGOHUD=1",
             "MANGOHUD_CONFIGFILE=/home/chaos/tmp/mh",
+            "OBS_PLUGINS_DATA_PATH=/usr/share/obs/obs-plugins",
+            "OBS_PLUGINS_PATH=/lib/obs-plugins",
             "QT_QPA_PLATFORMTHEME=qt5ct",
             "QT_WAYLAND_DISABLE_WINDOWDECORATION=1",
             "RADV_TEX_ANISO=16",
@@ -41,14 +43,14 @@
         "/home/chaos/.bashrc": [
             "PS1='$? \\[\\e[1;32m\\]\\w\\[\\e[m\\] $(date +%H:%M) $ '",
             "alias dc='docker-compose'",
-            "alias fs='firejail --net=none --noprofile steam'",
             "alias gd='clear; git diff --word-diff=color'",
             "alias gta5='WINEDLLOVERRIDES=winedbg.exe=d steam'",
             "alias nrb='npm run build'",
             "alias nrd='npm run dev'",
-            "alias pr='sudo polina.py rebuild'",
+            "alias pr='sudo ~/Documents/python/tools/polina.py rebuild'",
+            "alias sc='sort_css.py style.css > xxx.css'",
             "alias tr1='pp_jimenezmlaa_color=8 firejail --net=none --noprofile mangohud steam'",
-            "export PATH=\"~/Documents/python/tools:$PATH\""
+            "export PATH=\"~/Documents/python/tools:~/Documents/enterprise/scripts:$PATH\""
         ],
         "/home/chaos/.config/gtk-3.0/bookmarks": [
             "file:///home/chaos/tmp",
@@ -61,19 +63,20 @@
         ],
         "/home/chaos/.config/i3/config": [
             "$i3",
-            "bindsym $mod+Shift+p exec --no-startup-id picom --backend glx",
+            "bindcode 64 $disable_mouse",
+            "bindsym --whole-window button8 exec --no-startup-id xdotool key Next",
+            "bindsym --whole-window button9 exec --no-startup-id xdotool key Prior",
             "bindsym Print exec --no-startup-id xfce4-screenshooter -f -s ~/Pictures/Screenshots/`date +'%Y%m%d-%H%M%S'`.png",
             "exec --no-startup-id /usr/libexec/gsd-xsettings",
             "exec --no-startup-id feh --bg-fill '/home/chaos/Pictures/Screenshots/20210420-015850.png'",
             "exec --no-startup-id setxkbmap -layout us,ru -option 'grp:caps_toggle,grp_led:scroll'",
-            "exec --no-startup-id xinput set-prop 'HID 1d57:ad03 Mouse' 'libinput Accel Profile Enabled' 0 1",
-            "exec --no-startup-id xinput set-prop 'HID 1d57:ad03 Mouse' 'libinput Accel Speed' -0.3",
-            "exec --no-startup-id xinput set-prop 'PixArt OpticalMouse' 'libinput Accel Profile Enabled' 0 1",
-            "exec --no-startup-id xinput set-prop 'PixArt OpticalMouse' 'libinput Accel Speed' -0.2",
+            "exec --no-startup-id xinput set-prop 'HID 1d57:ad03 Mouse' 'libinput Accel Speed' -0.9",
+            "exec --no-startup-id xinput set-prop 'PixArt OpticalMouse' 'libinput Accel Speed' -0.9",
             "exec --no-startup-id xrandr --output HDMI-A-0 --set TearFree on",
             "exec --no-startup-id xset -dpms",
             "exec --no-startup-id xset r rate 200",
-            "exec --no-startup-id xset s off"
+            "exec --no-startup-id xset s off",
+            "for_window [class=\"ariel\"] sticky enable, floating enable"
         ],
         "/home/chaos/.config/rofi/config.rasi": [
             "@theme \"/usr/share/rofi/themes/Arc-Dark.rasi\""
@@ -86,11 +89,10 @@
             "input type:keyboard repeat_delay 200",
             "input type:keyboard xkb_layout us,ru",
             "input type:keyboard xkb_options grp:caps_toggle,grp_led:scroll",
-            "input type:pointer accel_profile flat",
-            "input type:pointer pointer_accel -0.2",
+            "input type:pointer pointer_accel -0.9",
             "output * subpixel none",
             "seat * xcursor_theme Breeze_Contrast",
-            "titlebar_padding 5 3"
+            "titlebar_padding 5 2"
         ],
         "/home/chaos/.nanorc": [
             "include /usr/share/nano/*.nanorc"
@@ -106,7 +108,7 @@
             "cpu_power",
             "cpu_temp",
             "cpu_text = 3700 pro",
-            "fps_limit = 0,60,120,30",
+            "fps_limit = 60,120,0,30",
             "gl_vsync = 0",
             "gpu_core_clock",
             "gpu_junction_temp",
@@ -117,14 +119,16 @@
             "gpu_text = 6600",
             "histogram",
             "legacy_layout = false",
+            "no_display",
             "ram",
             "swap",
+            "time_format = %F %T",
+            "time_no_label",
             "toggle_fps_limit = F9",
             "toggle_hud = F8",
             "vram",
             "vsync = 1",
-            "custom_text = date",
-            "exec = date +'%Y-%m-%d %H:%M'",
+            "time",
             "arch",
             "gpu_name",
             "present_mode",
@@ -174,6 +178,7 @@
     },
     "remove": {
         "/home/chaos/.config/i3/config": [
+            "bindsym $mod+a focus parent",
             "bindsym $mod+d exec --no-startup-id dmenu_run",
             "bindsym $mod+l focus up",
             "bindsym $mod+s layout stacking",
@@ -184,6 +189,7 @@
             "exec --no-startup-id nm-applet"
         ],
         "/home/chaos/.config/sway/config": [
+            "bindsym $mod+a focus parent",
             "bindsym $mod+d exec $menu",
             "bindsym $mod+s layout stacking"
         ]
@@ -226,7 +232,7 @@
             ],
             [
                 "status_command i3status",
-                "status_command while ~/Documents/enterprise/status_command.sh; do sleep 1; done"
+                "status_command while ~/Documents/enterprise/scripts/status_command.sh; do sleep 1; done"
             ]
         ],
         "/home/chaos/.config/ranger/rifle.conf": [
@@ -246,7 +252,7 @@
             ],
             [
                 "date +'%Y-%m-%d %X'",
-                "~/Documents/enterprise/status_command.sh"
+                "~/Documents/enterprise/scripts/status_command.sh"
             ],
             [
                 "background #323232",
@@ -295,8 +301,8 @@
         ],
         "/usr/share/vulkan/implicit_layer.d/MangoHud.x86.json": [
             [
-                "lib64",
-                "lib32"
+                "64",
+                "32"
             ]
         ],
         "/usr/share/X11/xkb/keycodes/evdev": [
@@ -323,14 +329,19 @@
         ]
     },
     "variables": {
+        "$disable_mouse": [
+            "exec --no-startup-id xinput --disable 'PixArt OpticalMouse' && sleep 0.5 && xinput --enable 'PixArt OpticalMouse'"
+        ],
         "$i3": [
+            "bindsym $mod+a exec --no-startup-id ENABLE_VKBASALT=0 ~/tmp/bin/ariel.x86_64; exec --no-startup-id sleep 0.2 && xdotool search --class ariel windowmove 1900 1060",
             "bindsym $mod+c exec --no-startup-id BC_FONT_SCALE=1.02 XCURSOR_THEME=Adwaita ~/Downloads/CinGG-20240731-x86_64.AppImage",
             "bindsym $mod+d exec --no-startup-id rofi -show drun -font 'mono 10'",
             "bindsym $mod+g exec --no-startup-id gthumb",
             "bindsym $mod+l exec --no-startup-id firejail --net=none --noprofile lutris",
             "bindsym $mod+m exec --no-startup-id xfce4-taskmanager",
-            "bindsym $mod+n exec --no-startup-id caja",
+            "bindsym $mod+n exec --no-startup-id caja /mnt",
             "bindsym $mod+s exec --no-startup-id firejail --net=none --noprofile subl4",
+            "bindsym $mod+Shift+s exec --no-startup-id firejail --net=none --noprofile steam",
             "bindsym $mod+Shift+g exec --no-startup-id gitg",
             "bindsym $mod+Shift+m exec --no-startup-id XCURSOR_THEME=Adwaita mangohud minetest",
             "bindsym $mod+t exec --no-startup-id touch -m ~/tmp/tzj",
@@ -350,7 +361,7 @@
             "exec --no-startup-id corectrl",
             "exec --no-startup-id firefox",
             "exec --no-startup-id pipewire",
-            "font pango:Lucida Grande 9",
+            "font pango:Lucida Grande 10.2",
             "hide_edge_borders both",
             "workspace_layout tabbed"
         ]
