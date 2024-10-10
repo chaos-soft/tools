@@ -334,6 +334,7 @@
         ],
         "$i3": [
             "bindsym $mod+a exec --no-startup-id ENABLE_VKBASALT=0 ~/tmp/bin/ariel.x86_64; exec --no-startup-id sleep 0.2 && xdotool search --class ariel windowmove 1900 1060",
+            "bindsym $mod+b exec --no-startup-id blender --python ~/Documents/python/tools/blender_crossfade.py",
             "bindsym $mod+c exec --no-startup-id BC_FONT_SCALE=1.02 XCURSOR_THEME=Adwaita ~/Downloads/CinGG-20240731-x86_64.AppImage",
             "bindsym $mod+d exec --no-startup-id rofi -show drun -font 'mono 10'",
             "bindsym $mod+g exec --no-startup-id gthumb",
