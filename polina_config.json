@@ -8,6 +8,7 @@
             "DXVK_STATE_CACHE_PATH=/home/chaos/.cache/dxvk",
             "EDITOR=nano",
             "ENABLE_VKBASALT=1",
+            "GSK_RENDERER=ngl",
             "MANGOHUD=1",
             "MANGOHUD_CONFIGFILE=/home/chaos/tmp/mh",
             "OBS_PLUGINS_DATA_PATH=/usr/share/obs/obs-plugins",
@@ -63,6 +64,7 @@
         ],
         "/home/chaos/.config/i3/config": [
             "$i3",
+            "bindcode 108 exec --no-startup-id sleep 0.1 && xdotool key --delay 100 space Ctrl+Left space",
             "bindcode 64 $disable_mouse",
             "bindsym --whole-window button8 exec --no-startup-id xdotool key Next",
             "bindsym --whole-window button9 exec --no-startup-id xdotool key Prior",
@@ -76,7 +78,10 @@
             "exec --no-startup-id xset -dpms",
             "exec --no-startup-id xset r rate 200",
             "exec --no-startup-id xset s off",
-            "for_window [class=\"ariel\"] sticky enable, floating enable"
+            "for_window [class=\"ariel\"] sticky enable, floating enable",
+            "for_window [title=\"Authentication required\"] floating enable",
+            "for_window [title=\"Calculator\"] floating enable",
+            "for_window [title=\"Disks\"] floating enable"
         ],
         "/home/chaos/.config/rofi/config.rasi": [
             "@theme \"/usr/share/rofi/themes/Arc-Dark.rasi\""
@@ -190,6 +195,7 @@
         ],
         "/home/chaos/.config/sway/config": [
             "bindsym $mod+a focus parent",
+            "bindsym $mod+b splith",
             "bindsym $mod+d exec $menu",
             "bindsym $mod+s layout stacking"
         ]
@@ -334,17 +340,18 @@
         ],
         "$i3": [
             "bindsym $mod+a exec --no-startup-id ENABLE_VKBASALT=0 ~/tmp/bin/ariel.x86_64; exec --no-startup-id sleep 0.2 && xdotool search --class ariel windowmove 1900 1060",
-            "bindsym $mod+b exec --no-startup-id blender --python ~/Documents/python/tools/blender_crossfade.py",
-            "bindsym $mod+c exec --no-startup-id BC_FONT_SCALE=1.02 XCURSOR_THEME=Adwaita ~/Downloads/CinGG-20240731-x86_64.AppImage",
+            "bindsym $mod+b exec --no-startup-id blender --python ~/Documents/python/2b/vse_generator.py",
+            "bindsym $mod+c exec --no-startup-id BC_FONT_SCALE=1.02 XCURSOR_THEME=Adwaita ~/Downloads/CinGG-20241031-x86_64.AppImage",
+            "bindsym $mod+Ctrl+g exec --no-startup-id ENABLE_VKBASALT=0 MANGOHUD=0 godot",
             "bindsym $mod+d exec --no-startup-id rofi -show drun -font 'mono 10'",
             "bindsym $mod+g exec --no-startup-id gthumb",
             "bindsym $mod+l exec --no-startup-id firejail --net=none --noprofile lutris",
             "bindsym $mod+m exec --no-startup-id xfce4-taskmanager",
             "bindsym $mod+n exec --no-startup-id caja /mnt",
             "bindsym $mod+s exec --no-startup-id firejail --net=none --noprofile subl4",
-            "bindsym $mod+Shift+s exec --no-startup-id firejail --net=none --noprofile steam",
             "bindsym $mod+Shift+g exec --no-startup-id gitg",
             "bindsym $mod+Shift+m exec --no-startup-id XCURSOR_THEME=Adwaita mangohud minetest",
+            "bindsym $mod+Shift+s exec --no-startup-id ENABLE_VKBASALT=0 WINE_FULLSCREEN_FSR=1 WINE_FULLSCREEN_FSR_CUSTOM_MODE=1477x831 firejail --net=none --noprofile steam",
             "bindsym $mod+t exec --no-startup-id touch -m ~/tmp/tzj",
             "bindsym Control+Tab focus right",
             "bindsym Ctrl+F10 exec --no-startup-id amixer set Capture toggle",
@@ -362,6 +369,7 @@
             "exec --no-startup-id corectrl",
             "exec --no-startup-id firefox",
             "exec --no-startup-id pipewire",
+            "exec --no-startup-id torbrowser-launcher",
             "font pango:Lucida Grande 10.2",
             "hide_edge_borders both",
             "workspace_layout tabbed"
