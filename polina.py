@@ -117,6 +117,8 @@ def reset() -> None:
         if bp.exists():
             print(f'reset {file_path}')
             fp.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
+            if fp.exists():
+                fp.unlink()
             subprocess.run(['cp', '-rp', bp, fp], check=True)
         elif fp.exists():
             s = input(f'rm {file_path}? [Y/n] ') or 'Y'
