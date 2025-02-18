@@ -12,6 +12,9 @@ BACKUP_PATH: Path = BASE_DIR / 'backup'
 CONFIG: dict[str, Any] = {}
 VARIABLES: dict[str, list[str]] = {}
 
+ENDC = '\033[0m'
+WARNING = '\033[91m'
+
 
 def append(file_path: str, list_: list[str]) -> None:
     str_ = '\n'.join(list_)
@@ -30,9 +33,20 @@ def append_once(file_path: str, list_: list[str]) -> None:
 def backup() -> None:
     BACKUP_PATH.mkdir(mode=0o755, parents=True, exist_ok=True)
     for file_path in CONFIG.keys():
+        if 'append_once' in CONFIG[file_path]:
+            continue
         if Path(file_path).exists() and not (BACKUP_PATH / get_backup_name(file_path)).exists():
             print(f'backup {file_path}')
             subprocess.run(['cp', '-rp', file_path, BACKUP_PATH / get_backup_name(file_path)], check=True)
+
+
+def check_append(file_path: str, list_: list[str]) -> None:
+    with open(file_path) as f:
+        data = f.read()
+        for v in list_:
+            v = replace_variables(v)
+            if v not in data:
+                print(f'{v} {WARNING}not in{ENDC} {file_path}')
 
 
 def check_backup() -> None:
@@ -41,6 +55,40 @@ def check_backup() -> None:
         if Path(file_path).exists() and bp.exists():
             if not filecmp.cmp(file_path, bp, shallow=True):
                 print(f'not equal {file_path}')
+
+
+def check_lines() -> None:
+    for file_path, actions in CONFIG.items():
+        if 'append' in actions:
+            check_append(file_path, actions['append'])
+        if 'append_once' in actions:
+            check_append(file_path, actions['append_once'])
+        if 'insert_after' in actions:
+            check_append(file_path, [x for y in actions['insert_after'].values() for x in y])
+        if 'remove' in actions:
+            check_remove(file_path, actions['remove'])
+        if 'replace' in actions:
+            check_replace(file_path, actions['replace'])
+
+
+def check_remove(file_path: str, list_: list[str]) -> None:
+    with open(file_path) as f:
+        data = f.read()
+        for v in list_:
+            if v in data:
+                print(f'{v} {WARNING}in{ENDC} {file_path}')
+
+
+def check_replace(file_path: str, list_: list[str]) -> None:
+    with open(file_path) as f:
+        data = f.read()
+        for v in list_:
+            remove = v[0]
+            insert = v[1]
+            if remove in data:
+                print(f'{remove} {WARNING}in{ENDC} {file_path}')
+            if insert not in data:
+                print(f'{insert} {WARNING}not in{ENDC} {file_path}')
 
 
 def get_backup_name(file_path: str) -> str:
@@ -121,7 +169,7 @@ def reset() -> None:
                 fp.unlink()
             subprocess.run(['cp', '-rp', bp, fp], check=True)
         elif fp.exists():
-            s = input(f'rm {file_path}? [Y/n] ') or 'Y'
+            s = input(f'{WARNING}rm{ENDC} {file_path}? [Y/n] ') or 'Y'
             if s == 'Y':
                 fp.unlink()
 
@@ -129,7 +177,7 @@ def reset() -> None:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('config_file', type=str)
-    parser.add_argument('action', choices=['backup', 'check_backup', 'rebuild', 'reset'], type=str)
+    parser.add_argument('action', choices=['backup', 'check_backup', 'check_lines', 'rebuild', 'reset'], type=str)
     args = parser.parse_args()
     load_config(args.config_file)
     eval(f'{args.action}()')
