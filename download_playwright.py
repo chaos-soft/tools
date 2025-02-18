@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import subprocess
 import sys
 import time
 
@@ -17,16 +18,10 @@ def main(file: str) -> int:
             if not v or v.startswith('#'):
                 continue
             page = browser.new_page()
-            page.goto(v)
-            page.locator('.product-page').wait_for()
-            canvas = page.locator('canvas.photo-zoom__preview')
-            canvas.wait_for()
-            canvas.click()
-            gf = page.locator('.gallery-full')
-            gf.wait_for()
-            images = gf.locator('.gallery-full__item')
-            for vv in images.all():
-                print(vv.get_attribute('data-zoom-image'))
+            page.goto(v, wait_until='domcontentloaded')
+            image = page.locator('.wrap > a:nth-child(1) > img:nth-child(1)')
+            args = ['curl', '-LOJ', image.evaluate('(e) => e.src')]
+            print(subprocess.run(args))
             page.close()
             time.sleep(TIMEOUT)
     browser.close()
