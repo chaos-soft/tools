@@ -7,8 +7,7 @@ import json
 import subprocess
 import sys
 
-BASE_DIR = Path(__file__).resolve().parent
-BACKUP_PATH: Path = BASE_DIR / 'backup'
+BACKUP_PATH: Path = Path.home() / '.polina_backup'
 CONFIG: dict[str, Any] = {}
 VARIABLES: dict[str, list[str]] = {}
 
@@ -41,6 +40,8 @@ def backup() -> None:
 
 
 def check_append(file_path: str, list_: list[str]) -> None:
+    if not Path(file_path).exists():
+        return None
     with open(file_path) as f:
         data = f.read()
         for v in list_:
@@ -72,6 +73,8 @@ def check_lines() -> None:
 
 
 def check_remove(file_path: str, list_: list[str]) -> None:
+    if not Path(file_path).exists():
+        return None
     with open(file_path) as f:
         data = f.read()
         for v in list_:
@@ -80,6 +83,8 @@ def check_remove(file_path: str, list_: list[str]) -> None:
 
 
 def check_replace(file_path: str, list_: list[str]) -> None:
+    if not Path(file_path).exists():
+        return None
     with open(file_path) as f:
         data = f.read()
         for v in list_:

@@ -21,7 +21,7 @@ def main() -> int:
             if new != v:
                 print(v)
                 print(new)
-                subprocess.run(['mv', '-i', v, new], check=True)
+                subprocess.run(['mv', '-n', v, new], check=True)
     return 0
 
 
