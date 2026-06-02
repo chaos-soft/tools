@@ -9,46 +9,54 @@ import yaml
 HOME = Path.home()
 TIMEOUT_1S: int = 1
 TIMEOUT_5S: int = 5
-URL: str = 'https://studio.rutube.ru/video-editor/'
+URL: str = "https://studio.rutube.ru/video-editor/"
 
 
 def main(file: str) -> int:
     with open(file) as f:
         data = yaml.safe_load(f)
         for i, v in enumerate(data):
-            run(f'{HOME}/Downloads/waterfox/waterfox --new-tab {URL}{v['u']}', TIMEOUT_5S)
+            run(
+                f"{HOME}/Downloads/waterfox/waterfox --new-tab {URL}{v['u']}",
+                TIMEOUT_5S,
+            )
 
-            run('xdotool mousemove 1000 350 click 1')
-            run('xdotool key --delay 100 Ctrl+a BackSpace')
-            run(['xdotool', 'type', v['t']])
-            run('xdotool mousemove 1000 500 click 1')
-            run('xdotool key --delay 100 Ctrl+a BackSpace')
-            run(['xdotool', 'type', v['d'].replace('\n', '\r\n')])
+            # Название
+            run("xdotool mousemove 1000 350 click 1")
+            run("xdotool key --delay 100 Ctrl+a BackSpace")
+            run(["xdotool", "type", v["t"]])
 
-            run('xdotool click 5 click 5 click 5')
+            # Описание
+            run("xdotool mousemove 1000 500 click 1")
+            run("xdotool key --delay 100 Ctrl+a BackSpace")
+            run(["xdotool", "type", v["d"].replace("\n", "\r\n")])
 
-            run('xdotool mousemove 1100 460 click 1')
-            run('xdotool mousemove 1100 500 click 1')
+            run("xdotool click 5 click 5 click 5")
 
-            run('xdotool mousemove 350 980 click 1')
+            # Доступ
+            run("xdotool mousemove 1100 460 click 1")
+            run("xdotool mousemove 1100 500 click 1")
 
-            run('xdotool mousemove 360 650 click 3')
-            run('xdotool key o')
-            print(v['u'] + ': ' + run('xsel --clipboard --output'))
+            run("xdotool mousemove 350 980 click 1")
+
+            # Обложка
+            run("xdotool mousemove 360 650 click 3")
+            run("xdotool key o")
+            print(v["u"] + ": " + run("xsel --clipboard --output"))
         print(i + 1)
     return 0
 
 
 def run(args: str | list, sleep: int = TIMEOUT_1S) -> str:
     if type(args) is str:
-        args = args.split(' ')
+        args = args.split(" ")
     cp = subprocess.run(args, capture_output=True)
     time.sleep(sleep)
-    return cp.stdout.decode('utf-8')
+    return cp.stdout.decode("utf-8")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('file', type=str)
+    parser.add_argument("file", type=str)
     args = parser.parse_args()
     sys.exit(main(args.file))

@@ -15,12 +15,12 @@ def main(file: str) -> int:
     with open(file) as f:
         for v in f.readlines():
             v = v.strip()
-            if not v or v.startswith('#'):
+            if not v or v.startswith("#"):
                 continue
             page = browser.new_page()
-            page.goto(v, wait_until='domcontentloaded')
-            image = page.locator('.wrap > a:nth-child(1) > img:nth-child(1)')
-            args = ['curl', '-LOJ', image.evaluate('(e) => e.src')]
+            page.goto(v, wait_until="domcontentloaded")
+            image = page.locator(".wrap > a:nth-child(1) > img:nth-child(1)")
+            args = ["curl", "-LOJ", image.evaluate("(e) => e.src")]
             print(subprocess.run(args))
             page.close()
             time.sleep(TIMEOUT)
@@ -28,8 +28,8 @@ def main(file: str) -> int:
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('file', type=str)
+    parser.add_argument("file", type=str)
     args = parser.parse_args()
     sys.exit(main(args.file))

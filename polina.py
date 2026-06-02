@@ -3,51 +3,66 @@ from pathlib import Path
 from typing import Any
 import argparse
 import filecmp
-import json
+import re
 import subprocess
 import sys
 
-BACKUP_PATH: Path = Path.home() / '.polina_backup'
+import yaml
+
+APPLICATIONS_PATH: Path = Path.home() / ".local/share/applications"
+BACKUP_PATH: Path = Path.home() / ".polina_backup"
 CONFIG: dict[str, Any] = {}
-VARIABLES: dict[str, list[str]] = {}
+DESKTOP_FILES: dict[str, Any] = {}
+VARIABLES: dict[str, str] = {}
 
-ENDC = '\033[0m'
-WARNING = '\033[91m'
+ENDC: str = "\033[0m"
+WARNING: str = "\033[91m"
+
+DESKTOP_ENTRY: str = """[Desktop Entry]
+Name={}
+Type=Application
+{}
+"""
 
 
-def append(file_path: str, list_: list[str]) -> None:
-    str_ = '\n'.join(list_)
+def append(file_path: str, str_: str) -> None:
     str_ = replace_variables(str_)
-    print(f'append {file_path}')
+    print(f"append {file_path}")
     Path(file_path).parent.mkdir(mode=0o755, parents=True, exist_ok=True)
-    with open(file_path, 'a') as f:
-        f.write(f'{str_}\n')
+    with open(file_path, "a") as f:
+        f.write(str_)
 
 
-def append_once(file_path: str, list_: list[str]) -> None:
+def append_once(file_path: str, str_: str) -> None:
     if not Path(file_path).exists():
-        append(file_path, list_)
+        append(file_path, str_)
 
 
 def backup() -> None:
     BACKUP_PATH.mkdir(mode=0o755, parents=True, exist_ok=True)
     for file_path in CONFIG.keys():
-        if 'append_once' in CONFIG[file_path]:
+        if "append_once" in CONFIG[file_path]:
             continue
-        if Path(file_path).exists() and not (BACKUP_PATH / get_backup_name(file_path)).exists():
-            print(f'backup {file_path}')
-            subprocess.run(['cp', '-rp', file_path, BACKUP_PATH / get_backup_name(file_path)], check=True)
+        if (
+            Path(file_path).exists()
+            and not (BACKUP_PATH / get_backup_name(file_path)).exists()
+        ):
+            print(f"backup {file_path}")
+            subprocess.run(
+                ["cp", "-rp", file_path, BACKUP_PATH / get_backup_name(file_path)],
+                check=True,
+            )
 
 
-def check_append(file_path: str, list_: list[str]) -> None:
+def check_append(file_path: str, str_: str) -> None:
     if not Path(file_path).exists():
         return None
     with open(file_path) as f:
         data = f.read()
-        for v in list_:
-            v = replace_variables(v)
+        str_ = replace_variables(str_)
+        for v in str_.strip().split("\n"):
             if v not in data:
-                print(f'{v} {WARNING}not in{ENDC} {file_path}')
+                print(f"{v} {WARNING}not in{ENDC} {file_path}")
 
 
 def check_backup() -> None:
@@ -55,60 +70,72 @@ def check_backup() -> None:
         bp = BACKUP_PATH / get_backup_name(file_path)
         if Path(file_path).exists() and bp.exists():
             if not filecmp.cmp(file_path, bp, shallow=True):
-                print(f'not equal {file_path}')
+                print(f"not equal {file_path}")
 
 
 def check_lines() -> None:
     for file_path, actions in CONFIG.items():
-        if 'append' in actions:
-            check_append(file_path, actions['append'])
-        if 'append_once' in actions:
-            check_append(file_path, actions['append_once'])
-        if 'insert_after' in actions:
-            check_append(file_path, [x for y in actions['insert_after'].values() for x in y])
-        if 'remove' in actions:
-            check_remove(file_path, actions['remove'])
-        if 'replace' in actions:
-            check_replace(file_path, actions['replace'])
+        if "append" in actions:
+            check_append(file_path, actions["append"])
+        if "append_once" in actions:
+            check_append(file_path, actions["append_once"])
+        if "insert_after" in actions:
+            check_append(
+                file_path,
+                "".join([x for y in actions["insert_after"].values() for x in y]),
+            )
+        if "replace_old" in actions:
+            check_replace(
+                file_path, actions["replace_old"], actions.get("replace_new", "")
+            )
 
 
-def check_remove(file_path: str, list_: list[str]) -> None:
+def check_replace(file_path: str, old: str, new: str) -> None:
     if not Path(file_path).exists():
         return None
     with open(file_path) as f:
         data = f.read()
-        for v in list_:
-            if v in data:
-                print(f'{v} {WARNING}in{ENDC} {file_path}')
-
-
-def check_replace(file_path: str, list_: list[str]) -> None:
-    if not Path(file_path).exists():
-        return None
-    with open(file_path) as f:
-        data = f.read()
-        for v in list_:
-            remove = v[0]
-            insert = v[1]
+        old_list = list(filter(None, old.split("\n")))
+        new_list = list(filter(None, new.split("\n")))
+        for i, _ in enumerate(old_list):
+            remove = old_list[i]
+            remove = replace_variables(remove)
             if remove in data:
-                print(f'{remove} {WARNING}in{ENDC} {file_path}')
-            if insert not in data:
-                print(f'{insert} {WARNING}not in{ENDC} {file_path}')
+                print(f"{remove} {WARNING}in{ENDC} {file_path}")
+            try:
+                insert = new_list[i]
+                insert = replace_variables(insert)
+                if insert not in data:
+                    print(f"{insert} {WARNING}not in{ENDC} {file_path}")
+            except IndexError:
+                pass
+
+
+def desktop() -> None:
+    for name, item in DESKTOP_FILES.items():
+        file_path = APPLICATIONS_PATH / re.sub(
+            r"[/]", "", f"{name.lower()}.desktop"
+        ).replace(" ", "-")
+        print(file_path)
+        with open(file_path, "w") as f:
+            de = DESKTOP_ENTRY.format(name, item.strip("\n"))
+            de = replace_variables(de)
+            f.write(de)
 
 
 def get_backup_name(file_path: str) -> str:
-    return file_path.replace('/', '__').lstrip('__')
+    return file_path.replace("/", "__").lstrip("__")
 
 
-def insert_after(file_path: str, dict_: dict[str, list[str]]) -> None:
+def insert_after(file_path: str, dict_: dict[str, str]) -> None:
     if Path(file_path).exists():
-        print(f'insert_after {file_path}')
-        with open(file_path, 'r+') as f:
+        print(f"insert_after {file_path}")
+        with open(file_path, "r+") as f:
             data = f.readlines()
             for k, v in dict_.items():
                 try:
                     i = data.index(k)
-                    data.insert(i + 1, '{}\n'.format('\n'.join(v)))
+                    data.insert(i + 1, v)
                 except ValueError:
                     pass
             f.seek(0)
@@ -116,74 +143,88 @@ def insert_after(file_path: str, dict_: dict[str, list[str]]) -> None:
 
 
 def load_config(file: str) -> None:
-    global CONFIG, VARIABLES
+    global CONFIG, DESKTOP_FILES, VARIABLES
     with open(file) as f:
-        CONFIG = json.load(f)
-        if CONFIG.get('variables'):
-            VARIABLES = CONFIG.pop('variables')
+        CONFIG = yaml.safe_load(f)
+        if CONFIG.get("desktop_files"):
+            DESKTOP_FILES = CONFIG.pop("desktop_files")
+        if CONFIG.get("variables"):
+            VARIABLES = CONFIG.pop("variables")
 
 
 def rebuild() -> None:
     reset()
     for file_path, actions in CONFIG.items():
-        if 'append' in actions:
-            append(file_path, actions['append'])
-        if 'append_once' in actions:
-            append_once(file_path, actions['append_once'])
-        if 'insert_after' in actions:
-            insert_after(file_path, actions['insert_after'])
-        if 'remove' in actions:
-            list_ = [[v, ''] for v in actions['remove']]
-            if 'replace' in actions:
-                actions['replace'].extend(list_)
-            else:
-                actions['replace'] = list_
-        if 'replace' in actions:
-            replace(file_path, actions['replace'])
+        if "append" in actions:
+            append(file_path, actions["append"])
+        if "append_once" in actions:
+            append_once(file_path, actions["append_once"])
+        if "insert_after" in actions:
+            insert_after(file_path, actions["insert_after"])
+        if "replace_old" in actions:
+            replace(file_path, actions["replace_old"], actions.get("replace_new", ""))
 
 
-def replace(file_path: str, list_: list[list[str]]) -> None:
+def replace(file_path: str, old: str, new: str) -> None:
     if Path(file_path).exists():
-        print(f'replace {file_path}')
-        with open(file_path, 'r+') as f:
+        print(f"replace {file_path}")
+        with open(file_path, "r+") as f:
             data = f.read()
-            for v in list_:
-                data = data.replace(v[0], v[1])
+            old = replace_variables(old)
+            new = replace_variables(new)
+            old_list = list(filter(None, str(old).split("\n")))
+            new_list = list(filter(None, str(new).split("\n")))
+            for i, _ in enumerate(old_list):
+                try:
+                    data = data.replace(old_list[i], new_list[i])
+                except IndexError:
+                    data = data.replace(old_list[i], "")
             f.seek(0)
             f.write(data)
             f.truncate()
 
 
 def replace_variables(str_: str) -> str:
-    for var, list_ in VARIABLES.items():
+    for var, str__ in VARIABLES.items():
         if var in str_:
-            str_ = str_.replace(var, '\n'.join(list_))
+            str_ = str_.replace(var, str__)
     return str_
 
 
 def reset() -> None:
     for file_path, actions in CONFIG.items():
-        if 'append_once' in actions:
+        if "append_once" in actions:
             continue
         fp = Path(file_path)
         bp = BACKUP_PATH / get_backup_name(file_path)
         if bp.exists():
-            print(f'reset {file_path}')
+            print(f"reset {file_path}")
             fp.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
             if fp.exists():
                 fp.unlink()
-            subprocess.run(['cp', '-rp', bp, fp], check=True)
+            subprocess.run(["cp", "-rp", bp, fp], check=True)
         elif fp.exists():
-            s = input(f'{WARNING}rm{ENDC} {file_path}? [Y/n] ') or 'Y'
-            if s == 'Y':
+            s = input(f"{WARNING}rm{ENDC} {file_path}? [Y/n] ") or "Y"
+            if s == "Y":
                 fp.unlink()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('config_file', type=str)
-    parser.add_argument('action', choices=['backup', 'check_backup', 'check_lines', 'rebuild', 'reset'], type=str)
+    parser.add_argument("config_file", type=str)
+    parser.add_argument(
+        "action",
+        choices=[
+            "backup",
+            "check_backup",
+            "check_lines",
+            "desktop",
+            "rebuild",
+            "reset",
+        ],
+        type=str,
+    )
     args = parser.parse_args()
     load_config(args.config_file)
-    eval(f'{args.action}()')
+    eval(f"{args.action}()")
     sys.exit(0)

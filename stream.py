@@ -1,37 +1,38 @@
 #!/usr/bin/env python3
-import asyncio
+import subprocess
 import sys
 
-blank = '/root/tmp/obs.mp4'
-input_ = 'xxx/xxx'
-ip = '127.0.0.1'
-output = 'xxx/xxx'
+BLANK: str = "/mnt/xxx2/memory card/cinelerra/blank/obs.mp4"
+OUTPUT: str = "rtmp://xxx/xxx/xxx"
 
-ffmpeg_blank = f'ffmpeg -v quiet -re -stream_loop -1 -i {blank} -c copy -f flv rtmp://{ip}/{output}'.split(' ')
-ffmpeg_output = f'ffmpeg -v quiet -re -i rtmp://{ip}/{input_} -c copy -f flv rtmp://{ip}/{output}'.split(' ')
-ffprobe = f'timeout 4s ffprobe -v quiet rtmp://{ip}/{input_}'.split(' ')
-
-
-async def main():
-    proc_blank = None
-    proc_output = None
-    while True:
-        proc = await asyncio.create_subprocess_exec(ffprobe[0], *ffprobe[1:])
-        returncode = await proc.wait()
-        if returncode == 0:
-            if proc_blank:
-                proc_blank.kill()
-                proc_blank = None
-            if not proc_output:
-                proc_output = await asyncio.create_subprocess_exec(ffmpeg_output[0], *ffmpeg_output[1:])
-        else:
-            if proc_output:
-                proc_output.kill()
-                proc_output = None
-            if not proc_blank:
-                proc_blank = await asyncio.create_subprocess_exec(ffmpeg_blank[0], *ffmpeg_blank[1:])
+DOCKER_START: str = "docker compose up -d"
+DOCKER_STOP: str = "docker compose stop"
+FFMPEG: str = (
+    "ffmpeg -loglevel error -stats -re -stream_loop -1 -i '{}' -c copy -f flv {}"
+).format(BLANK, OUTPUT)
 
 
-if __name__ == '__main__':
-    asyncio.run(main())
-    sys.exit(0)
+def main() -> int:
+    try:
+        while True:
+            s = input("blank [1], docker_start [2], docker_stop [3], quit [q] ") or "1"
+            match s:
+                case "1":
+                    print("blank")
+                    subprocess.run(FFMPEG, shell=True)
+                case "2":
+                    print("docker_start")
+                    subprocess.run(DOCKER_START, shell=True)
+                case "3":
+                    print("docker_stop")
+                    subprocess.run(DOCKER_STOP, shell=True)
+                case "q":
+                    break
+    except KeyboardInterrupt:
+        print()
+        return 128 + 2
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
