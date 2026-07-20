@@ -4,7 +4,7 @@ import subprocess
 import sys
 
 
-def get_extensions(path):
+def get_extensions(path) -> str:
     output = subprocess.run(
         ["file", "-b", "--extension", path], capture_output=True, text=True
     )
@@ -24,6 +24,9 @@ def main() -> int:
                 print(v)
                 print(new)
                 subprocess.run(["mv", "-n", v, new], check=True)
+        else:
+            print(ext)
+            print(v)
     return 0
 
 

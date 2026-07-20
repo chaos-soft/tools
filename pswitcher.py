@@ -2,8 +2,8 @@
 import subprocess
 import sys
 
-CYRILLIC = r"йцукенгшщзхъфывапролджэячсмитьбю." + r"ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ?"
-LATIN = r"qwertyuiop[]asdfghjkl;'zxcvbnm,./" + r'QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?'
+CYRILLIC: str = r"йцукенгшщзхъфывапролджэячсмитьбю.ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ?"
+LATIN: str = r"qwertyuiop[]asdfghjkl;'zxcvbnm,./" + r'QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?'
 
 
 def main() -> int:
